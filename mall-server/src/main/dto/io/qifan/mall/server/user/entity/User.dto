@@ -1,0 +1,18 @@
+
+input UserInput {
+    #allScalars(User)
+    id?
+}
+
+specification UserSpec {
+    #allScalars
+    like/i(id)
+    like/i(phone)
+    like/i(gender)
+    like/i(nickname)
+    like/i(password)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

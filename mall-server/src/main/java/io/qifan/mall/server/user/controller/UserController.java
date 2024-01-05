@@ -1,16 +1,21 @@
 package io.qifan.mall.server.user.controller;
 
+import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.user.entity.User;
-import io.qifan.mall.server.user.entity.UserFetcher;
-import io.qifan.mall.server.user.entity.UserTable;
+import io.qifan.mall.server.user.entity.dto.UserInput;
+import io.qifan.mall.server.user.entity.dto.UserSpec;
+import io.qifan.mall.server.user.repository.UserRepository;
+import io.qifan.mall.server.user.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.babyfish.jimmer.client.FetchBy;
-import org.babyfish.jimmer.sql.JSqlClient;
-import org.babyfish.jimmer.sql.ast.LikeMode;
+import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,15 +23,27 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserController {
 
-  public final static UserFetcher userFetcher = UserFetcher.$.avatar().gender();
-  private final JSqlClient jSqlClient;
+  private final UserService userService;
 
-  @PostMapping("list")
-  public List<@FetchBy(value = "userFetcher") User> list(@RequestParam String nickname) {
-    UserTable t1 = UserTable.$;
-    return jSqlClient.createQuery(t1)
-        .where(t1.nickname().like(nickname, LikeMode.ANYWHERE))
-        .select(t1.fetch(userFetcher))
-        .execute();
+  @GetMapping("{id}")
+  public @FetchBy(value = "COMPLEX_FETCHER", ownerType = UserRepository.class) User findById(
+      @PathVariable String id) {
+    return userService.findById(id);
+  }
+
+  @PostMapping("query")
+  public Page<@FetchBy(value = "COMPLEX_FETCHER", ownerType = UserRepository.class) User> query(
+      @RequestBody QueryRequest<UserSpec> queryRequest) {
+    return userService.query(queryRequest);
+  }
+
+  @PostMapping("save")
+  public String save(@RequestBody @Validated UserInput user) {
+    return userService.save(user);
+  }
+
+  @PostMapping("delete")
+  public Boolean delete(@RequestBody List<String> ids) {
+    return userService.delete(ids);
   }
 }
