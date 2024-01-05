@@ -1,0 +1,30 @@
+input ProductOrderInput {
+    #allScalars(ProductOrder)
+    id?
+}
+input ProductOrderCalculateInput{
+  items{
+    productCount
+    productSkuId
+  }
+  couponUser{
+    id
+  }
+}
+ProductOrderPriceView{
+  couponAmount
+  vipAmount
+  deliveryFee
+  productAmount
+  availableCoupons: List<String>
+}
+
+specification ProductOrderSpec {
+    #allScalars
+    like/i(status)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

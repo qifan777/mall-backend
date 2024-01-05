@@ -1,0 +1,17 @@
+
+input InviteHistoryInput {
+    #allScalars(InviteHistory)
+    id?
+}
+
+specification InviteHistorySpec {
+    #allScalars
+    inviter{
+        id
+    }
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

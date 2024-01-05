@@ -1,0 +1,16 @@
+
+input RoleInput {
+    #allScalars(Role)
+    id?
+    menuIds: Array<String>
+}
+
+specification RoleSpec {
+    #allScalars
+    like/i(name)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

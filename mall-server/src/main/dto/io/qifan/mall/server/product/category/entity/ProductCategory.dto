@@ -1,0 +1,17 @@
+
+input ProductCategoryInput {
+    #allScalars(ProductCategory)
+    id?
+}
+
+specification ProductCategorySpec {
+    #allScalars
+    like/i(name)
+    like/i(description)
+    like/i(parentId)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

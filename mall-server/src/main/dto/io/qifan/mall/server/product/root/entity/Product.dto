@@ -1,0 +1,29 @@
+
+input ProductInput {
+    #allScalars(Product)
+    id?
+    categoryId
+    skuList{
+        #allScalars(ProductSku)
+        id?
+    }
+    attributes{
+       #allScalars(ProductAttribute)
+       id?
+    }
+}
+
+specification ProductSpec {
+    #allScalars
+    like/i(name)
+    like/i(tags)
+    like/i(description)
+    like/i(brand)
+    like/i(features)
+    like/i(specs)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

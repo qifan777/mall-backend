@@ -1,0 +1,22 @@
+
+input UserInput {
+    #allScalars(User)
+    id?
+    roleIds: Array<String>
+}
+input UserRegisterInput{
+    phone
+    password
+    code: String
+}
+specification UserSpec {
+    #allScalars
+    like/i(id)
+    like/i(password)
+    like/i(nickname)
+    like/i(phone)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

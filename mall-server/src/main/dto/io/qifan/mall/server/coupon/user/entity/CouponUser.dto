@@ -1,0 +1,24 @@
+
+input CouponUserInput {
+    #allScalars(CouponUser)
+    id?
+    userId
+    couponId
+}
+
+specification CouponUserSpec {
+    #allScalars
+    user{
+        eq(id)
+        like/i(phone)
+    }
+    coupon{
+      like/i(name)
+    }
+    like/i(receiveType)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

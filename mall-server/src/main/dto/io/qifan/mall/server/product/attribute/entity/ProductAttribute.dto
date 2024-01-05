@@ -1,0 +1,16 @@
+
+input ProductAttributeInput {
+    #allScalars(ProductAttribute)
+    id?
+}
+
+specification ProductAttributeSpec {
+    #allScalars
+    like/i(name)
+    like/i(values)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

@@ -1,0 +1,23 @@
+
+input CouponUseRecordInput {
+    #allScalars(CouponUseRecord)
+    id?
+}
+
+specification CouponUseRecordSpec {
+    #allScalars
+    couponUser{
+      coupon{
+        like/i(name)
+      }
+      user{
+        like/i(phone)
+      }
+    }
+    like/i(orderId)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

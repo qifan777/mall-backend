@@ -30,6 +30,7 @@
     <module>mall-spring-boot-starter-sms</module>
     <module>mall-spring-boot-starter-oss</module>
     <module>mall-spring-boot-starter-security</module>
+    <module>mall-server</module>
   </modules>
   <dependencyManagement>
     <dependencies>

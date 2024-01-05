@@ -1,0 +1,17 @@
+input DictInput {
+    #allScalars(Dict)
+    id?
+}
+
+specification DictSpec {
+    #allScalars
+    like/i(dictName)
+    like/i(keyName)
+    like/i(id)
+    like/i(keyEnName)
+    like/i(dictEnName)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

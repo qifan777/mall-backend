@@ -1,0 +1,18 @@
+
+input InviterInput {
+    #allScalars(Inviter)
+    id?
+    -code
+    -qrCode
+}
+
+specification InviterSpec {
+    #allScalars
+    like/i(code)
+    like/i(qrCode)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

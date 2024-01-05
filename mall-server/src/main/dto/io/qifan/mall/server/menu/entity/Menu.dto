@@ -1,0 +1,17 @@
+
+input MenuInput {
+    #allScalars(Menu)
+    id?
+    parentId
+}
+
+specification MenuSpec {
+    #allScalars
+    like/i(name)
+    like/i(parentId)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}
