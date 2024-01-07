@@ -1,6 +1,6 @@
 <#-- @ftlvariable name="" type="io.qifan.infrastructure.generator.processor.model.front.TableItem" -->
 <#if getItemType().code!=-1>
-    <el-table-column label="${getLabel()}" prop="${getBind()}" sortable="custom" show-overflow-tooltip>
+    <el-table-column label="${getLabel()}" prop="${getBind()}" sortable="custom">
         <template v-slot:default="{row}:${entityType.typeName}Scope">
             <#switch getItemType().code>
                 <#case 0>

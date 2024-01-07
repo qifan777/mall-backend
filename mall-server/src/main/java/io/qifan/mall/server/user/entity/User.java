@@ -11,30 +11,30 @@ import org.babyfish.jimmer.sql.GeneratedValue;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Key;
 
-@Entity
 @GenEntity
+@Entity
 public interface User extends BaseDateTime {
 
   @Id
   @GeneratedValue(generatorType = UUIDIdGenerator.class)
   String id();
 
+  @GenField(value = "手机号", order = 0)
   @Key
-  @GenField(value = "手机号", order = -1)
   String phone();
 
-  @GenField(value = "密码", order = 0)
+  @GenField(value = "密码", order = 1)
   String password();
 
-  @GenField(value = "昵称", order = 1)
+  @GenField(value = "昵称", order = 2)
   @Null
   String nickname();
 
-  @GenField(value = "头像", type = ItemType.PICTURE, order = 2)
+  @GenField(value = "头像", order = 3, type = ItemType.PICTURE)
   @Null
   String avatar();
 
-  @GenField(value = "性别", order = 3)
+  @GenField(value = "性别", order = 4)
   @Null
   String gender();
 }
