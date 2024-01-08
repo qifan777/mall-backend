@@ -3,7 +3,11 @@ input UserInput {
     #allScalars(User)
     id?
 }
-
+input UserRegisterInput{
+    phone
+    password
+    code: String
+}
 specification UserSpec {
     #allScalars
     like/i(id)

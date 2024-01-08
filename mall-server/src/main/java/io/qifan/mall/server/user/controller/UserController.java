@@ -1,14 +1,19 @@
 package io.qifan.mall.server.user.controller;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.user.entity.User;
 import io.qifan.mall.server.user.entity.dto.UserInput;
+import io.qifan.mall.server.user.entity.dto.UserRegisterInput;
 import io.qifan.mall.server.user.entity.dto.UserSpec;
 import io.qifan.mall.server.user.repository.UserRepository;
 import io.qifan.mall.server.user.service.UserService;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.babyfish.jimmer.client.EnableImplicitApi;
 import org.babyfish.jimmer.client.FetchBy;
+import org.babyfish.jimmer.client.meta.Api;
+import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +21,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
+@EnableDtoGeneration
 public class UserController {
 
   private final UserService userService;
@@ -45,5 +52,13 @@ public class UserController {
   @PostMapping("delete")
   public Boolean delete(@RequestBody List<String> ids) {
     return userService.delete(ids);
+  }
+  @GetMapping("user-info")
+  public @FetchBy(value = "COMPLEX_FETCHER", ownerType = UserRepository.class) User getUserInfo() {
+    return userService.getUserInfo();
+  }
+  @PostMapping("register")
+  public SaTokenInfo register(@RequestBody @Validated UserRegisterInput registerInput) {
+    return userService.register(registerInput);
   }
 }
