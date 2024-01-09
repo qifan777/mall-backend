@@ -28,7 +28,7 @@ public class PasswordAuthStrategyImpl implements IAuthStrategy {
     UserTable userTable = UserTable.$;
     // 从数据库去根据手机号找到相应的用户
     User databaseUser = jSqlClient.createQuery(userTable)
-        .where(userTable.phone().eq(phonePasswordAuth.getPhoneNumber()))
+        .where(userTable.phone().eq(phonePasswordAuth.getPhone()))
         .select(userTable.fetch(UserFetcher.$.allScalarFields()))
         .fetchOptional()
         .orElseThrow(() -> new BusinessException(AuthErrorCode.USER_LOGIN_NOT_EXIST));

@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class PhonePasswordAuth implements AuthModel {
 
-  private String phoneNumber;
+  private String phone;
   private String password;
 }
