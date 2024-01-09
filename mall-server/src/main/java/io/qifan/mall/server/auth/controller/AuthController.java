@@ -2,6 +2,7 @@ package io.qifan.mall.server.auth.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import io.qifan.mall.server.auth.model.PhonePasswordAuth;
+import io.qifan.mall.server.auth.model.WeChatAuth;
 import io.qifan.mall.server.auth.service.IAuthStrategy;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -20,5 +21,10 @@ public class AuthController {
   @PostMapping("phone-password")
   public SaTokenInfo authByPhonePassword(@RequestBody PhonePasswordAuth phonePasswordAuth) {
     return authStrategyMap.get(IAuthStrategy.PASSWORD).auth(phonePasswordAuth);
+  }
+
+  @PostMapping("wechat")
+  public SaTokenInfo authByWecChat(@RequestBody WeChatAuth weChatAuth) {
+    return authStrategyMap.get(IAuthStrategy.WECHAT).auth(weChatAuth);
   }
 }

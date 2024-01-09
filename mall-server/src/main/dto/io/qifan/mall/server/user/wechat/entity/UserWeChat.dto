@@ -1,0 +1,15 @@
+
+input UserWeChatInput {
+    #allScalars(UserWeChat)
+    id?
+}
+
+specification UserWeChatSpec {
+    #allScalars
+    like/i(id)
+    like/i(openId)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

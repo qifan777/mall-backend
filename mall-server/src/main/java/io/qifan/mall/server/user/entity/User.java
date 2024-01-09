@@ -5,11 +5,13 @@ import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.infrastructure.jimmer.BaseDateTime;
 import io.qifan.mall.server.infrastructure.jimmer.UUIDIdGenerator;
+import io.qifan.mall.server.user.wechat.entity.UserWeChat;
 import jakarta.validation.constraints.Null;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.GeneratedValue;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Key;
+import org.babyfish.jimmer.sql.OneToOne;
 
 @GenEntity
 @Entity
@@ -37,4 +39,8 @@ public interface User extends BaseDateTime {
   @GenField(value = "性别", order = 4)
   @Null
   String gender();
+
+  @Null
+  @OneToOne(mappedBy = "user")
+  UserWeChat wechat();
 }
