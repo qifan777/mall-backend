@@ -18,7 +18,6 @@ import org.babyfish.jimmer.sql.Table;
  */
 @Entity
 @GenEntity
-@Table(name = "user_wechat")
 public interface UserWeChat extends BaseDateTime {
 
   @Id
