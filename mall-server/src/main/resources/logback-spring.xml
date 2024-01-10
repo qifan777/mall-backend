@@ -7,7 +7,4 @@
   <springProfile name="prod">
     <include resource="logback/logback-prod.xml"/>
   </springProfile>
-  <springProfile name="test">
-    <include resource="logback/logback-test.xml"/>
-  </springProfile>
 </configuration>

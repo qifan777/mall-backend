@@ -3,6 +3,7 @@ package io.qifan.mall.server.user.entity;
 import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.infrastructure.generator.core.ItemType;
+import io.qifan.mall.server.dict.model.DictConstants;
 import io.qifan.mall.server.infrastructure.jimmer.BaseDateTime;
 import io.qifan.mall.server.infrastructure.jimmer.UUIDIdGenerator;
 import io.qifan.mall.server.user.wechat.entity.UserWeChat;
@@ -36,9 +37,9 @@ public interface User extends BaseDateTime {
   @Null
   String avatar();
 
-  @GenField(value = "性别", order = 4)
+  @GenField(value = "性别", order = 4, type = ItemType.SELECTABLE, dictEnName = DictConstants.GENDER)
   @Null
-  String gender();
+  DictConstants.Gender gender();
 
   @Null
   @OneToOne(mappedBy = "user")

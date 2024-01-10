@@ -12,7 +12,7 @@ specification UserSpec {
     #allScalars
     like/i(id)
     like/i(phone)
-    like/i(gender)
+//    like/i(gender)
     like/i(nickname)
     like/i(password)
     ge(createdTime)
