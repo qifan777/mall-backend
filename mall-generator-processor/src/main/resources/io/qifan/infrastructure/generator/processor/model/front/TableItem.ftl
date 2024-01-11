@@ -4,7 +4,7 @@
         <template v-slot:default="{row}:${entityType.typeName}Scope">
             <#switch getItemType().code>
                 <#case 0>
-                    <dict-column :dict-id="${getDictId()}" :value="row.${getBind()}"></dict-column>
+                    <dict-column :dict-id="DictConstants.${getDictEnName()}" :value="row.${getBind()}"></dict-column>
                     <#break>
                 <#case 4>
                     <el-avatar :src="row.${getBind()}" alt=""></el-avatar>

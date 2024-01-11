@@ -14,7 +14,7 @@
     import type { ${entityType.typeName}Input } from '@/apis/__generated/model/static'
     import ${'{ Delete, Edit, Plus }'} from '@element-plus/icons-vue'
     import ${'DictColumn'} from '@/components/dict/dict-column.vue'
-
+    import { ${'DictConstants'} } from '@/apis/__generated/model/enums/DictConstants'
     type ${entityType.typeName}Scope = Scope<${entityType.typeName}Dto['${entityType.typeName}Repository/COMPLEX_FETCHER']>
     const ${uncapitalizeTypeName}Store = use${entityType.typeName}Store()
     const {

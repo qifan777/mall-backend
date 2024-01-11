@@ -6,6 +6,7 @@
   import { storeToRefs } from 'pinia'
   import ${'DictSelect'} from '@/components/dict/dict-select.vue'
   import ${'DatetimePicker'} from '@/components/datetime/datetime-picker.vue'
+  import { ${'DictConstants'} } from '@/apis/__generated/model/enums/DictConstants'
 
   const ${uncapitalizeTypeName}Store = use${entityType.typeName}Store()
   const { queryData } = storeToRefs(${uncapitalizeTypeName}Store)

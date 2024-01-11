@@ -76,7 +76,7 @@ public class FieldUtils {
         .setLabel(genItem.value())
         .setBind(field.getName())
         .setFieldName(field.getName())
-        .setDictId(String.valueOf(genItem.dictId()))
+        .setDictEnName(String.valueOf(genItem.dictEnName()))
         .setItemType(genItem.type().equals(ItemType.AUTO) ? itemType(field) : genItem.type())
         .setNullable(isNullable(field));
   }

@@ -3,7 +3,7 @@
     <el-form-item label="${getLabel()}">
         <#switch getItemType().code>
             <#case 0>
-                <dict-select :dict-id="${getDictId()}" v-model="query.${getBind()}"></dict-select>
+                <dict-select :dict-id="DictConstants.${getDictEnName()}" v-model="query.${getBind()}"></dict-select>
                 <#break>
             <#case 3>
                 <el-input-number v-model="query.${getBind()}" controls-position="right"></el-input-number>

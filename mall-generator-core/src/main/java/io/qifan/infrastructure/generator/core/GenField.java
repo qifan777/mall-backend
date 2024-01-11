@@ -17,5 +17,5 @@ public @interface GenField {
     int order() default 9999;
 
     // 当类型为下拉框时，填写字典编号
-    int dictId() default 0;
+    String dictEnName() default "";
 }

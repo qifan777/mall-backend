@@ -10,6 +10,7 @@
     import ${'FooterButton'} from '@/components/base/dialog/footer-button.vue'
     import ${'DictSelect'} from '@/components/dict/dict-select.vue'
     import type { FormInstance, FormRules } from 'element-plus'
+    import { ${'DictConstants'} } from '@/apis/__generated/model/enums/DictConstants'
 
     const ${uncapitalizeTypeName}Store = use${entityType.typeName}Store()
     const {closeDialog, reloadTableData} = ${uncapitalizeTypeName}Store

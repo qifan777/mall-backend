@@ -15,7 +15,7 @@ public class FormItem extends ItemField {
                 itemField.getLabel(),
                 itemField.getBind(),
                 itemField.getFieldName(),
-                itemField.getDictId(),
+                itemField.getDictEnName(),
                 itemField.getItemType(),
                 itemField.getNullable());
 

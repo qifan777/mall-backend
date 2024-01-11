@@ -23,7 +23,7 @@ public class ItemField extends FileModel {
     private String label;
     private String bind;
     private String fieldName;
-    private String dictId;
+    private String dictEnName;
     private ItemType itemType;
     private Boolean nullable;
 
@@ -31,7 +31,7 @@ public class ItemField extends FileModel {
         label = "";
         bind = "";
         fieldName = "";
-        dictId = "";
+        dictEnName = "";
         itemType = ItemType.INPUT_TEXT;
     }
 
@@ -39,14 +39,14 @@ public class ItemField extends FileModel {
                      String label,
                      String bind,
                      String fieldName,
-                     String dictId,
+                     String dictEnName,
                      ItemType itemType,
                      Boolean nullable) {
         this.entityType = entityType;
         this.label = label;
         this.bind = bind;
         this.fieldName = fieldName;
-        this.dictId = dictId;
+        this.dictEnName = dictEnName;
         this.itemType = itemType;
         this.nullable = nullable;
     }

@@ -15,7 +15,7 @@ public class QueryItem extends ItemField {
         super(itemField.getEntityType(), itemField.getLabel(),
                 itemField.getBind(),
                 itemField.getFieldName(),
-                itemField.getDictId(),
+                itemField.getDictEnName(),
                 itemField.getItemType(),
                 itemField.getNullable());
     }
