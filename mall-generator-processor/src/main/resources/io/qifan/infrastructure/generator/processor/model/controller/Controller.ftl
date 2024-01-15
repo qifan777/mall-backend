@@ -8,16 +8,17 @@ import ${importType.getTypePath()};
 @RestController
 @RequestMapping("${uncapitalizeTypeName}")
 @AllArgsConstructor
+@DefaultFetcherOwner(${entityType.typeName}Repository.class)
 public class ${getType().getTypeName()} {
     private final ${entityType.typeName}Service ${uncapitalizeTypeName}Service;
 
     @GetMapping("{id}")
-    public @FetchBy(value = "COMPLEX_FETCHER", ownerType = ${entityType.typeName}Repository.class) ${entityType.typeName} findById(@PathVariable String id) {
+    public @FetchBy(value = "COMPLEX_FETCHER") ${entityType.typeName} findById(@PathVariable String id) {
         return ${uncapitalizeTypeName}Service.findById(id);
     }
 
     @PostMapping("query")
-    public Page< @FetchBy(value = "COMPLEX_FETCHER", ownerType = ${entityType.typeName}Repository.class) ${entityType.typeName}> query(@RequestBody QueryRequest<${entityType.typeName}Spec> queryRequest) {
+    public Page< @FetchBy(value = "COMPLEX_FETCHER") ${entityType.typeName}> query(@RequestBody QueryRequest<${entityType.typeName}Spec> queryRequest) {
         return ${uncapitalizeTypeName}Service.query(queryRequest);
     }
 

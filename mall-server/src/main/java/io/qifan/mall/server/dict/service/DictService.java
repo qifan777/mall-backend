@@ -62,7 +62,7 @@ public class DictService {
     Map<String, List<Dict>> dictMaps = new HashMap<>();
     all.forEach(dict -> {
       String dictEnName = converter.convert(dict.dictEnName());
-      dictMaps.putIfAbsent(converter.convert(dictEnName), new ArrayList<>());
+      dictMaps.putIfAbsent(dictEnName, new ArrayList<>());
       List<Dict> dictList = dictMaps.get(dictEnName);
       dictList.add(dict);
     });

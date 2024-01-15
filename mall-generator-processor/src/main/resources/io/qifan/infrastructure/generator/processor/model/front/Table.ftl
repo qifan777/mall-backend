@@ -107,7 +107,7 @@
                     {{ row.editor.nickname }}({{ row.editor.phone }})
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="{280}">
+            <el-table-column label="操作" fixed="right" >
                 <template v-slot:default="{ row }">
                     <div>
                         <el-button class="edit-btn" link size="small" type="primary" @click="handleEdit(row)">
