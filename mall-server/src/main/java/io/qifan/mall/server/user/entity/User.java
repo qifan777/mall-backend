@@ -6,12 +6,16 @@ import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.dict.model.DictConstants;
 import io.qifan.mall.server.infrastructure.jimmer.BaseDateTime;
 import io.qifan.mall.server.infrastructure.jimmer.UUIDIdGenerator;
+import io.qifan.mall.server.role.entity.Role;
 import io.qifan.mall.server.user.wechat.entity.UserWeChat;
 import jakarta.validation.constraints.Null;
+import java.util.List;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.GeneratedValue;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Key;
+import org.babyfish.jimmer.sql.ManyToManyView;
+import org.babyfish.jimmer.sql.OneToMany;
 import org.babyfish.jimmer.sql.OneToOne;
 
 @GenEntity
@@ -44,4 +48,14 @@ public interface User extends BaseDateTime {
   @Null
   @OneToOne(mappedBy = "user")
   UserWeChat wechat();
+
+  @OneToMany(mappedBy = "user")
+  List<UserRoleRel> roles();
+
+  @ManyToManyView(
+      prop = "roles",
+      deeperProp = "role"
+  )
+  List<Role> rolesView();
+
 }

@@ -8,13 +8,17 @@ import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.sms.SmsService;
 import io.qifan.mall.server.auth.model.LoginDevice;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
+import io.qifan.mall.server.role.entity.Role;
+import io.qifan.mall.server.role.repository.RoleRepository;
 import io.qifan.mall.server.user.entity.User;
 import io.qifan.mall.server.user.entity.UserDraft;
+import io.qifan.mall.server.user.entity.UserFetcher;
 import io.qifan.mall.server.user.entity.UserTable;
 import io.qifan.mall.server.user.entity.dto.UserInput;
 import io.qifan.mall.server.user.entity.dto.UserRegisterInput;
 import io.qifan.mall.server.user.entity.dto.UserSpec;
 import io.qifan.mall.server.user.repository.UserRepository;
+import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +36,7 @@ public class UserService {
   private final SmsService smsService;
 
   public User findById(String id) {
-    return userRepository.findById(id, UserRepository.COMPLEX_FETCHER)
+    return userRepository.findById(id, UserRepository.USER_ROLE_FETCHER)
         .orElseThrow(() -> new BusinessException(
             ResultCode.NotFindError, "数据不存在"));
   }
@@ -41,7 +45,15 @@ public class UserService {
     if (userInput.getPassword().length() <= 16) {
       userInput.setPassword(BCrypt.hashpw(userInput.getPassword()));
     }
-    return userRepository.save(userInput).id();
+    User user = userInput.toEntity();
+    return userRepository.save(UserDraft.$.produce(user, draft -> {
+      Arrays.stream(userInput.getRoleIds()).forEach(roleId -> {
+        draft.addIntoRoles(userRole -> {
+          userRole.applyRole(role -> role.setId(roleId));
+          userRole.setUser(user);
+        });
+      });
+    })).id();
   }
 
   public Page<User> query(QueryRequest<UserSpec> queryRequest) {
@@ -54,7 +66,7 @@ public class UserService {
   }
 
   public User getUserInfo() {
-    return userRepository.findById(StpUtil.getLoginIdAsString(), UserRepository.COMPLEX_FETCHER)
+    return userRepository.findById(StpUtil.getLoginIdAsString(), UserRepository.USER_ROLE_FETCHER)
         .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "数据不存在"));
   }
 
@@ -75,5 +87,4 @@ public class UserService {
     })).id(), LoginDevice.BROWSER);
     return StpUtil.getTokenInfo();
   }
-
 }

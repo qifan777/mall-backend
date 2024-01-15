@@ -1,6 +1,7 @@
 package io.qifan.mall.server.user.repository;
 
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
+import io.qifan.mall.server.role.entity.RoleFetcher;
 import io.qifan.mall.server.user.entity.User;
 import io.qifan.mall.server.user.entity.UserFetcher;
 import io.qifan.mall.server.user.entity.UserTable;
@@ -15,6 +16,7 @@ public interface UserRepository extends JRepository<User, String> {
 
   UserTable userTable = UserTable.$;
   UserFetcher COMPLEX_FETCHER = UserFetcher.$.allScalarFields();
+  UserFetcher USER_ROLE_FETCHER = UserFetcher.$.allScalarFields().rolesView(RoleFetcher.$.name());
 
   default Page<User> findPage(QueryRequest<UserSpec> queryRequest, Fetcher<User> fetcher) {
     UserSpec query = queryRequest.getQuery();

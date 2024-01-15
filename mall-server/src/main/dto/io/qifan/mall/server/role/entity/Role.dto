@@ -1,0 +1,15 @@
+
+input RoleInput {
+    #allScalars(Role)
+    id?
+}
+
+specification RoleSpec {
+    #allScalars
+    like/i(name)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

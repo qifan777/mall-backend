@@ -2,6 +2,7 @@
 input UserInput {
     #allScalars(User)
     id?
+    roleIds: Array<String>
 }
 input UserRegisterInput{
     phone
