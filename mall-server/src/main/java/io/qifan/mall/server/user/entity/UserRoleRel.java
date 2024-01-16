@@ -16,7 +16,7 @@ public interface UserRoleRel extends BaseEntity {
   @Key
   @OnDissociate(DissociateAction.DELETE)
   User user();
-
+  @OnDissociate(DissociateAction.DELETE)
   @ManyToOne
   @Key
   Role role();

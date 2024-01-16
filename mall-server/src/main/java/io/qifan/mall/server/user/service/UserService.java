@@ -18,6 +18,7 @@ import io.qifan.mall.server.user.entity.dto.UserInput;
 import io.qifan.mall.server.user.entity.dto.UserRegisterInput;
 import io.qifan.mall.server.user.entity.dto.UserSpec;
 import io.qifan.mall.server.user.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class UserService {
     }
     User user = userInput.toEntity();
     return userRepository.save(UserDraft.$.produce(user, draft -> {
+      draft.setRoles(new ArrayList<>());
       Arrays.stream(userInput.getRoleIds()).forEach(roleId -> {
         draft.addIntoRoles(userRole -> {
           userRole.applyRole(role -> role.setId(roleId));
