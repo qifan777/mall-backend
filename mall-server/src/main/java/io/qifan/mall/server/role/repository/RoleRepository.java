@@ -17,7 +17,7 @@ public interface RoleRepository extends JRepository<Role, String> {
     RoleFetcher COMPLEX_FETCHER = RoleFetcher.$.allScalarFields()
         .creator(UserFetcher.$.phone().nickname())
         .editor(UserFetcher.$.phone().nickname());
-    RoleFetcher SIMPLE_FETCHER = RoleFetcher.$.allScalarFields();
+    RoleFetcher ROLE_MENU_FETCHER = RoleFetcher.$.allScalarFields().menusView(true);
     default Page<Role> findPage(QueryRequest<RoleSpec> queryRequest, Fetcher<Role> fetcher) {
         RoleSpec query = queryRequest.getQuery();
         Pageable pageable = queryRequest.toPageable();

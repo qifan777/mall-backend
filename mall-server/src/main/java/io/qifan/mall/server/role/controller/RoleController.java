@@ -27,7 +27,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping("{id}")
-    public @FetchBy(value = "COMPLEX_FETCHER") Role findById(@PathVariable String id) {
+    public @FetchBy(value = "ROLE_MENU_FETCHER") Role findById(@PathVariable String id) {
         return roleService.findById(id);
     }
 

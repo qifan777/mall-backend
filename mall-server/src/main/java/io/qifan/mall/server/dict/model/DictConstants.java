@@ -5,8 +5,24 @@ import lombok.Getter;
 
 public class DictConstants {
 
+  public static final String MENU_TYPE = "MENU_TYPE";
   public static final String GENDER = "GENDER";
-  public static final String SYSTEM_CONSTANT = "SYSTEM_CONSTANT";
+
+  @Getter
+  @AllArgsConstructor
+  public enum MenuType {
+    BUTTON(2, "按钮", "BUTTON", 1002, "菜单类型", "MENU_TYPE", 2),
+    PAGE(0, "页面", "PAGE", 1002, "菜单类型", "MENU_TYPE", 1),
+    DIRECTORY(1, "目录", "DIRECTORY", 1002, "菜单类型", "MENU_TYPE", 0),
+    ;
+    final int keyId;
+    final String keyName;
+    final String keyEnName;
+    final int dictId;
+    final String dictName;
+    final String dictEnName;
+    final int orderNum;
+  }
 
   @Getter
   @AllArgsConstructor
