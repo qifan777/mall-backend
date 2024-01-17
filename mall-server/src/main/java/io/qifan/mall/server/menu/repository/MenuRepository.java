@@ -18,6 +18,7 @@ public interface MenuRepository extends JRepository<Menu, String> {
   MenuFetcher COMPLEX_FETCHER = MenuFetcher.$.allScalarFields()
       .creator(UserFetcher.$.phone().nickname())
       .editor(UserFetcher.$.phone().nickname());
+  MenuFetcher SIMPLE_FETCHER = MenuFetcher.$.allScalarFields();
 
   default Page<Menu> findPage(QueryRequest<MenuSpec> queryRequest, Fetcher<Menu> fetcher) {
     MenuSpec query = queryRequest.getQuery();

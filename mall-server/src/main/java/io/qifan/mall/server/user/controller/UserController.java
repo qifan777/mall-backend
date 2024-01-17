@@ -2,6 +2,8 @@ package io.qifan.mall.server.user.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
+import io.qifan.mall.server.menu.entity.Menu;
+import io.qifan.mall.server.menu.repository.MenuRepository;
 import io.qifan.mall.server.role.entity.Role;
 import io.qifan.mall.server.role.repository.RoleRepository;
 import io.qifan.mall.server.user.entity.User;
@@ -61,5 +63,9 @@ public class UserController {
   @PostMapping("register")
   public SaTokenInfo register(@RequestBody @Validated UserRegisterInput registerInput) {
     return userService.register(registerInput);
+  }
+  @GetMapping("menus")
+  public List<@FetchBy(value = "SIMPLE_FETCHER",ownerType = MenuRepository.class) Menu>  getUserMenus(){
+    return  userService.getUserMenus();
   }
 }

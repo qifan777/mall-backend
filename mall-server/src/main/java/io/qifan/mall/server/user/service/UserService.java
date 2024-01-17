@@ -8,11 +8,11 @@ import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.sms.SmsService;
 import io.qifan.mall.server.auth.model.LoginDevice;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
-import io.qifan.mall.server.role.entity.Role;
-import io.qifan.mall.server.role.repository.RoleRepository;
+import io.qifan.mall.server.menu.entity.Menu;
+import io.qifan.mall.server.menu.entity.MenuTable;
+import io.qifan.mall.server.menu.repository.MenuRepository;
 import io.qifan.mall.server.user.entity.User;
 import io.qifan.mall.server.user.entity.UserDraft;
-import io.qifan.mall.server.user.entity.UserFetcher;
 import io.qifan.mall.server.user.entity.UserTable;
 import io.qifan.mall.server.user.entity.dto.UserInput;
 import io.qifan.mall.server.user.entity.dto.UserRegisterInput;
@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.babyfish.jimmer.sql.JSqlClient;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Transactional
 public class UserService {
+
+  private final MenuRepository menuRepository;
 
   private final UserRepository userRepository;
   private final SmsService smsService;
@@ -88,5 +91,16 @@ public class UserService {
       draft.setNickname("默认用户").setPassword(BCrypt.hashpw(draft.password()));
     })).id(), LoginDevice.BROWSER);
     return StpUtil.getTokenInfo();
+  }
+
+  public List<Menu> getUserMenus() {
+    MenuTable t = MenuTable.$;
+    return menuRepository.sql()
+        .createQuery(t)
+        .where(t.roles(roleMenuRelTableEx -> roleMenuRelTableEx.role().users(
+            userRoleRelTableEx -> userRoleRelTableEx.user().id()
+                .eq(StpUtil.getLoginIdAsString()))))
+        .select(t.fetch(MenuRepository.SIMPLE_FETCHER))
+        .execute();
   }
 }
