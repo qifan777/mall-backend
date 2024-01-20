@@ -1,0 +1,19 @@
+
+input ProductSkuInput {
+    #allScalars(ProductSku)
+    productId
+    id?
+}
+
+specification ProductSkuSpec {
+    #allScalars
+    like/i(name)
+    like/i(description)
+    like/i(productId)
+    like/i(id)
+    valuesStr:String?
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}
