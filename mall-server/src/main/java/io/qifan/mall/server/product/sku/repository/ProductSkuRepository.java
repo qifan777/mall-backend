@@ -18,6 +18,7 @@ public interface ProductSkuRepository extends JRepository<ProductSku, String> {
 
   ProductSkuTable productSkuTable = ProductSkuTable.$;
   ProductSkuFetcher COMPLEX_FETCHER = ProductSkuFetcher.$.allScalarFields()
+      .productId()
       .creator(UserFetcher.$.phone().nickname())
       .editor(UserFetcher.$.phone().nickname());
 
