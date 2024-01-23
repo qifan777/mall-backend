@@ -29,7 +29,7 @@ public class ProductController {
   private final ProductService productService;
 
   @GetMapping("{id}")
-  public @FetchBy(value = "COMPLEX_FETCHER") Product findById(@PathVariable String id) {
+  public @FetchBy(value = "PRODUCT_SKU_FETCHER") Product findById(@PathVariable String id) {
     return productService.findById(id);
   }
 

@@ -23,7 +23,7 @@ public class ProductService {
   private final ProductRepository productRepository;
 
   public Product findById(String id) {
-    return productRepository.findById(id, ProductRepository.COMPLEX_FETCHER)
+    return productRepository.findById(id, ProductRepository.PRODUCT_SKU_FETCHER)
         .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "数据不存在"));
   }
 

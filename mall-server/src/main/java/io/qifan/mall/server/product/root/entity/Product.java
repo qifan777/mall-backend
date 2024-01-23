@@ -6,12 +6,14 @@ import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
 import io.qifan.mall.server.product.category.entity.ProductCategory;
 import io.qifan.mall.server.product.root.model.KeyValue;
+import io.qifan.mall.server.product.sku.entity.ProductSku;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.IdView;
 import org.babyfish.jimmer.sql.ManyToOne;
+import org.babyfish.jimmer.sql.OneToMany;
 import org.babyfish.jimmer.sql.Serialized;
 
 @Entity
@@ -55,4 +57,6 @@ public interface Product extends BaseEntity {
   @GenField(value = "属性", order = 9)
   @Serialized
   List<KeyValue> attributes();
+  @OneToMany(mappedBy = "product")
+  List<ProductSku> skuList();
 }
