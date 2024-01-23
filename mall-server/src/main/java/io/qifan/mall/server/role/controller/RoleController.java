@@ -1,11 +1,11 @@
 package io.qifan.mall.server.role.controller;
+
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.role.entity.Role;
 import io.qifan.mall.server.role.entity.dto.RoleInput;
 import io.qifan.mall.server.role.entity.dto.RoleSpec;
 import io.qifan.mall.server.role.repository.RoleRepository;
 import io.qifan.mall.server.role.service.RoleService;
-import io.qifan.mall.server.user.repository.UserRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.babyfish.jimmer.client.FetchBy;
@@ -24,25 +24,27 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @DefaultFetcherOwner(RoleRepository.class)
 public class RoleController {
-    private final RoleService roleService;
 
-    @GetMapping("{id}")
-    public @FetchBy(value = "ROLE_MENU_FETCHER") Role findById(@PathVariable String id) {
-        return roleService.findById(id);
-    }
+  private final RoleService roleService;
 
-    @PostMapping("query")
-    public Page< @FetchBy(value = "COMPLEX_FETCHER") Role> query(@RequestBody QueryRequest<RoleSpec> queryRequest) {
-        return roleService.query(queryRequest);
-    }
+  @GetMapping("{id}")
+  public @FetchBy(value = "ROLE_MENU_FETCHER") Role findById(@PathVariable String id) {
+    return roleService.findById(id);
+  }
 
-    @PostMapping("save")
-    public String save(@RequestBody @Validated RoleInput role) {
-        return roleService.save(role);
-    }
+  @PostMapping("query")
+  public Page<@FetchBy(value = "COMPLEX_FETCHER") Role> query(
+      @RequestBody QueryRequest<RoleSpec> queryRequest) {
+    return roleService.query(queryRequest);
+  }
 
-    @PostMapping("delete")
-    public Boolean delete(@RequestBody List<String> ids) {
-        return roleService.delete(ids);
-    }
+  @PostMapping("save")
+  public String save(@RequestBody @Validated RoleInput role) {
+    return roleService.save(role);
+  }
+
+  @PostMapping("delete")
+  public Boolean delete(@RequestBody List<String> ids) {
+    return roleService.delete(ids);
+  }
 }

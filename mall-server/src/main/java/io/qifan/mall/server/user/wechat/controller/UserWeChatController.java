@@ -51,6 +51,6 @@ public class UserWeChatController {
 
   @PostMapping("register")
   public SaTokenInfo register(@RequestBody @Validated UserWeChatRegisterInput registerInput) {
-    return  userWeChatService.register(registerInput);
+    return userWeChatService.register(registerInput);
   }
 }

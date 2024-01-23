@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @AllArgsConstructor
 public class WechatAuthStrategyImpl implements IAuthStrategy {
+
   private final WxMaService wxMaService;
   private final JSqlClient jSqlClient;
 
@@ -38,7 +39,8 @@ public class WechatAuthStrategyImpl implements IAuthStrategy {
         .select(t)
         .fetchOptional()
         .orElseThrow(
-            () -> new BusinessException(AuthErrorCode.USER_PERMISSION_UNAUTHENTICATED, "请绑定手机号"));
+            () -> new BusinessException(AuthErrorCode.USER_PERMISSION_UNAUTHENTICATED,
+                "请绑定手机号"));
     // 登录的设备是微信
     StpUtil.login(userWechat.user().id(), LoginDevice.MP_WECHAT);
     return StpUtil.getTokenInfo();

@@ -57,6 +57,7 @@ public interface Product extends BaseEntity {
   @GenField(value = "属性", order = 9)
   @Serialized
   List<KeyValue> attributes();
+
   @OneToMany(mappedBy = "product")
   List<ProductSku> skuList();
 }

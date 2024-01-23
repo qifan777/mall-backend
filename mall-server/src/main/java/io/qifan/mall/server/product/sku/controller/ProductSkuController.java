@@ -10,7 +10,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.babyfish.jimmer.client.FetchBy;
 import org.babyfish.jimmer.client.meta.DefaultFetcherOwner;
-import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +42,7 @@ public class ProductSkuController {
   public String save(@RequestBody @Validated ProductSkuInput productSku) {
     return productSkuService.save(productSku);
   }
+
   @PostMapping("save-batch")
   public Boolean saveBatch(@RequestBody List<ProductSkuInput> productSkus) {
     productSkus.forEach(productSkuService::save);

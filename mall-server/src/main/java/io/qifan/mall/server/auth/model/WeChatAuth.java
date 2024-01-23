@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 public class WeChatAuth implements AuthModel {
-    private String loginCode;
+
+  private String loginCode;
 }

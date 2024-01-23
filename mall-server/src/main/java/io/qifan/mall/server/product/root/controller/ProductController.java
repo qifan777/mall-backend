@@ -10,7 +10,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.babyfish.jimmer.client.FetchBy;
 import org.babyfish.jimmer.client.meta.DefaultFetcherOwner;
-import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

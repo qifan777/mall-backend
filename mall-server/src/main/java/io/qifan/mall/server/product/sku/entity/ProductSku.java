@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.babyfish.jimmer.sql.Column;
 import org.babyfish.jimmer.sql.DissociateAction;
-import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.IdView;
 import org.babyfish.jimmer.sql.Key;

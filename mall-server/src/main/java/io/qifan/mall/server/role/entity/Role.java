@@ -14,13 +14,17 @@ import org.babyfish.jimmer.sql.OneToMany;
 @GenEntity
 @Entity
 public interface Role extends BaseEntity {
-    @GenField(value = "角色名称")
-    @Key
-    String name();
-    @OneToMany(mappedBy = "role")
-    List<UserRoleRel> users();
-    @OneToMany(mappedBy = "role")
-    List<RoleMenuRel> menus();
-    @ManyToManyView(prop = "menus")
-    List<Menu> menusView();
+
+  @GenField(value = "角色名称")
+  @Key
+  String name();
+
+  @OneToMany(mappedBy = "role")
+  List<UserRoleRel> users();
+
+  @OneToMany(mappedBy = "role")
+  List<RoleMenuRel> menus();
+
+  @ManyToManyView(prop = "menus")
+  List<Menu> menusView();
 }

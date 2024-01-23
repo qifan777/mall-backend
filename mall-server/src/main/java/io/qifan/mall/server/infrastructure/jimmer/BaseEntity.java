@@ -10,15 +10,16 @@ import org.babyfish.jimmer.sql.OnDissociate;
 
 @MappedSuperclass
 public interface BaseEntity extends BaseDateTime {
-    @Id
-    @GeneratedValue(generatorType = UUIDIdGenerator.class)
-    String id();
 
-    @ManyToOne
-    @OnDissociate(DissociateAction.SET_NULL)
-    User editor();
+  @Id
+  @GeneratedValue(generatorType = UUIDIdGenerator.class)
+  String id();
 
-    @ManyToOne
-    @OnDissociate(DissociateAction.SET_NULL)
-    User creator();
+  @ManyToOne
+  @OnDissociate(DissociateAction.SET_NULL)
+  User editor();
+
+  @ManyToOne
+  @OnDissociate(DissociateAction.SET_NULL)
+  User creator();
 }

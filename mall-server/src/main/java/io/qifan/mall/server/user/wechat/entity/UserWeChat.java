@@ -10,7 +10,6 @@ import org.babyfish.jimmer.sql.GeneratedValue;
 import org.babyfish.jimmer.sql.Id;
 import org.babyfish.jimmer.sql.Key;
 import org.babyfish.jimmer.sql.OneToOne;
-import org.babyfish.jimmer.sql.Table;
 
 
 /**

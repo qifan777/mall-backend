@@ -1,7 +1,6 @@
 package io.qifan.mall.server.user.wechat.repository;
 
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
-import io.qifan.mall.server.user.entity.UserFetcher;
 import io.qifan.mall.server.user.wechat.entity.UserWeChat;
 import io.qifan.mall.server.user.wechat.entity.UserWeChatFetcher;
 import io.qifan.mall.server.user.wechat.entity.UserWeChatTable;
