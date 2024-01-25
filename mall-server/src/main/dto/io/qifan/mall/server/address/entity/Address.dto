@@ -1,0 +1,21 @@
+
+input AddressInput {
+    #allScalars(Address)
+    id?
+}
+
+specification AddressSpec {
+    #allScalars
+    like/i(address)
+    like/i(city)
+    like/i(province)
+    like/i(details)
+    like/i(district)
+    like/i(phoneNumber)
+    like/i(realName)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}
