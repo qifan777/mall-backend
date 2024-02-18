@@ -1,12 +1,11 @@
 <#-- @ftlvariable name="" type="io.qifan.mall.server.dict.model.DictGenContext" -->
-import type {DictInput} from '@/apis/__generated/model/static'
 
 export const DictConstants = {
 <#list getDictTypes() as type>
     ${getDictMap()[type][0].dictEnName()}: ${getDictMap()[type][0].dictId()?c},
 </#list>
 }
-export const Dictionaries: { [index: string]: { [index: string]: DictInput } } = {
+export const Dictionaries = {
     <#list getDictTypes() as type>
     ${type}: {
       <#list getDictMap()[type] as dict>
