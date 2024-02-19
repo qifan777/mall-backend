@@ -83,4 +83,8 @@ public class ProductOrderController {
         .timeStamp(timestamp).build();;
     return productOrderService.paymentNotifyWechat(body, signatureHeader);
   }
+  @PostMapping("{id}/cancel")
+  public Boolean cancel(@PathVariable String id) {
+    return productOrderService.cancel(id);
+  }
 }

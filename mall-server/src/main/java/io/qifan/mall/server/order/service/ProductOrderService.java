@@ -16,8 +16,8 @@ import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.ProductOrderFetcher;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
-import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
+import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
 import io.qifan.mall.server.payment.entity.PaymentFetcher;
@@ -109,5 +109,19 @@ public class ProductOrderService {
         new StateContext<>(stateEvent, new NotifyWeChatContext()
             .setDecryptNotifyResult(notifyResult)));
     return res.getResult();
+  }
+
+  public Boolean cancel(String id) {
+    ProductOrder orderInfo = productOrderRepository.findById(id)
+        .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "订单不存在"));
+    StateEvent stateEvent = StateEvent.builder()
+        .orderState(orderInfo.status().getKeyEnName())
+        .eventType("CANCEL")
+        .sceneId("*")
+        .businessCode("*")
+        .build();
+    R<String> res = stateMachine.action(
+        new StateContext<>(stateEvent, orderInfo));
+    return res.isSuccess();
   }
 }
