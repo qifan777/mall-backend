@@ -1,6 +1,7 @@
 package io.qifan.mall.server.order.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderV3Result;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.order.entity.ProductOrder;
@@ -11,6 +12,7 @@ import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.ProductOrderService;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.babyfish.jimmer.client.ApiIgnore;
 import org.babyfish.jimmer.client.FetchBy;
 import org.babyfish.jimmer.client.meta.DefaultFetcherOwner;
 import org.babyfish.jimmer.sql.EnableDtoGeneration;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,5 +69,18 @@ public class ProductOrderController {
   @PostMapping("{id}/prepay")
   public WxPayUnifiedOrderV3Result.JsapiResult prepay(@PathVariable String id) {
     return productOrderService.prepay(id);
+  }
+  @PostMapping("notify/wechat")
+  @ApiIgnore
+  public String paymentNotifyWechat(@RequestBody String body,
+      @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
+      @RequestHeader(value = "Wechatpay-Nonce") String nonce,
+      @RequestHeader(value = "Wechatpay-Signature") String signature,
+      @RequestHeader(value = "Wechatpay-Serial") String serial) {
+    SignatureHeader signatureHeader = SignatureHeader.builder().signature(signature)
+        .serial(serial)
+        .nonce(nonce)
+        .timeStamp(timestamp).build();;
+    return productOrderService.paymentNotifyWechat(body, signatureHeader);
   }
 }

@@ -1,6 +1,9 @@
 package io.qifan.mall.server.order.service;
 
+import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
+import com.github.binarywang.wxpay.bean.notify.WxPayNotifyV3Result.DecryptNotifyResult;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderV3Result.JsapiResult;
+import com.github.binarywang.wxpay.service.WxPayService;
 import io.qifan.infrastructure.common.constants.ResultCode;
 import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.common.model.R;
@@ -15,10 +18,12 @@ import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
 import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
+import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
 import io.qifan.mall.server.payment.entity.PaymentFetcher;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -32,6 +37,7 @@ public class ProductOrderService {
 
   private final ProductOrderRepository productOrderRepository;
   private final StateMachine stateMachine;
+  private final WxPayService wxPayService;
 
   public ProductOrder findById(String id) {
     return productOrderRepository.findById(id, ProductOrderRepository.COMPLEX_FETCHER)
@@ -79,6 +85,29 @@ public class ProductOrderService {
     R<JsapiResult> res = stateMachine.action(
         new StateContext<>(stateEvent, new PrepayWeChatContext()
             .setOrderId(id)));
+    return res.getResult();
+  }
+
+  @SneakyThrows
+  public String paymentNotifyWechat(String body, SignatureHeader signatureHeader) {
+    DecryptNotifyResult notifyResult = wxPayService.parseOrderNotifyV3Result(body, signatureHeader)
+        .getResult();
+    String outTradeNo = notifyResult.getOutTradeNo();
+    ProductOrder productOrder = productOrderRepository
+        .findById(outTradeNo,
+            ProductOrderFetcher.$
+                .allScalarFields()
+                .payment(PaymentFetcher.$.payType()))
+        .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "订单不存在"));
+    StateEvent stateEvent = StateEvent.builder()
+        .orderState(productOrder.status().getKeyEnName())
+        .eventType("NOTIFY")
+        .sceneId(productOrder.payment().payType().getKeyEnName())
+        .businessCode("*")
+        .build();
+    R<String> res = stateMachine.action(
+        new StateContext<>(stateEvent, new NotifyWeChatContext()
+            .setDecryptNotifyResult(notifyResult)));
     return res.getResult();
   }
 }
