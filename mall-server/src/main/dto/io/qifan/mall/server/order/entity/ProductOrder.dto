@@ -1,0 +1,23 @@
+
+input ProductOrderInput {
+    #allScalars(ProductOrder)
+    id?
+    -status
+    id(address)
+    items {
+        skuCount
+        productSkuId
+    }
+    payment{
+      payType
+    }
+}
+specification ProductOrderSpec {
+    #allScalars
+    like/i(remark)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}
