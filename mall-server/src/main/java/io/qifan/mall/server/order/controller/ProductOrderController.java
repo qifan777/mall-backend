@@ -1,6 +1,7 @@
 package io.qifan.mall.server.order.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderV3Result;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
@@ -61,5 +62,9 @@ public class ProductOrderController {
     targetOfCreator.setId(StpUtil.getLoginIdAsString());
     queryRequest.getQuery().setCreator(targetOfCreator);
     return productOrderService.query(queryRequest);
+  }
+  @PostMapping("{id}/prepay")
+  public WxPayUnifiedOrderV3Result.JsapiResult prepay(@PathVariable String id) {
+    return productOrderService.prepay(id);
   }
 }

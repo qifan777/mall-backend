@@ -46,9 +46,10 @@ wx:
       http-client-type: HttpClient
       type: redistemplate
   pay:
-    appId: appid
-    mchId: secret #商户id
-    apiV3Key: v3Key #V3密钥
-    certSerialNo: cc
-    privateKeyPath: cc #apiclient_key.pem证书文件的绝对路径或者以classpath:开头的类路径
-    privateCertPath: cc  #apiclient_cert.pem证书文件的绝对路径或者以classpath:开头的类路径
+    appId: appid # 小程序appid
+    mchId: mchid #商户id
+    apiV3Key: v3Key #微信支付V3密钥
+    certSerialNo: 4C144AABC0CC486EC0AB2DD492DCE6A2ZE2E6268 # 证书序列号
+    privateKeyPath: classpath:wechat/apiclient_key.pem #apiclient_key.pem证书文件的绝对路径或者以classpath:开头的类路径
+    privateCertPath: classpath:wechat/apiclient_cert.pem  #apiclient_cert.pem证书文件的绝对路径或者以classpath:开头的类路径
+    notifyUrl: "https://www.jarcheng.top/test-api/productOrder/notify" #支付成功回调地址，填写你的服务器地址
