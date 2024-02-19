@@ -1,9 +1,11 @@
 package io.qifan.mall.server.order.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
+import io.qifan.mall.server.order.entity.dto.ProductOrderSpec.TargetOf_creator;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.ProductOrderService;
 import java.util.List;
@@ -51,5 +53,13 @@ public class ProductOrderController {
   @PostMapping("create")
   public String create(@RequestBody @Validated ProductOrderInput productOrder) {
     return productOrderService.create(productOrder);
+  }
+  @PostMapping("user")
+  public Page<@FetchBy(value = "COMPLEX_FETCHER") ProductOrder> queryByUser(
+      @RequestBody QueryRequest<ProductOrderSpec> queryRequest) {
+    TargetOf_creator targetOfCreator = new TargetOf_creator();
+    targetOfCreator.setId(StpUtil.getLoginIdAsString());
+    queryRequest.getQuery().setCreator(targetOfCreator);
+    return productOrderService.query(queryRequest);
   }
 }

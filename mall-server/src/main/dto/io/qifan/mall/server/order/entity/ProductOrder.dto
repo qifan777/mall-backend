@@ -20,4 +20,7 @@ specification ProductOrderSpec {
     le(createdTime)
     ge(editedTime)
     le(editedTime)
+    creator {
+      id
+    }
 }
