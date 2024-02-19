@@ -37,3 +37,4 @@ build/
 /mall-server/dict-constants.ts
 /mall-server/DictConstants.java
 /mall-server/src/main/resources/application-private.yml
+/mall-server/src/main/resources/wechat-private/
