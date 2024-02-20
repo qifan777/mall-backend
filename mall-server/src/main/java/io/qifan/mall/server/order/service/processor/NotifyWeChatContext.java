@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class NotifyWeChatContext {
+
   private DecryptNotifyResult decryptNotifyResult;
   private ProductOrder productOrder;
 }

@@ -8,5 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 )
 @Data
 public class WxPayPropertiesExtension {
+
   private String notifyUrl;
 }

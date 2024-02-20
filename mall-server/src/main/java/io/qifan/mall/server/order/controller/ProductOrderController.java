@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.babyfish.jimmer.client.ApiIgnore;
 import org.babyfish.jimmer.client.FetchBy;
 import org.babyfish.jimmer.client.meta.DefaultFetcherOwner;
-import org.babyfish.jimmer.sql.EnableDtoGeneration;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,10 +53,12 @@ public class ProductOrderController {
   public Boolean delete(@RequestBody List<String> ids) {
     return productOrderService.delete(ids);
   }
+
   @PostMapping("create")
   public String create(@RequestBody @Validated ProductOrderInput productOrder) {
     return productOrderService.create(productOrder);
   }
+
   @PostMapping("user")
   public Page<@FetchBy(value = "COMPLEX_FETCHER") ProductOrder> queryByUser(
       @RequestBody QueryRequest<ProductOrderSpec> queryRequest) {
@@ -66,10 +67,12 @@ public class ProductOrderController {
     queryRequest.getQuery().setCreator(targetOfCreator);
     return productOrderService.query(queryRequest);
   }
+
   @PostMapping("{id}/prepay")
   public WxPayUnifiedOrderV3Result.JsapiResult prepay(@PathVariable String id) {
     return productOrderService.prepay(id);
   }
+
   @PostMapping("notify/wechat")
   @ApiIgnore
   public String paymentNotifyWechat(@RequestBody String body,
@@ -80,9 +83,10 @@ public class ProductOrderController {
     SignatureHeader signatureHeader = SignatureHeader.builder().signature(signature)
         .serial(serial)
         .nonce(nonce)
-        .timeStamp(timestamp).build();;
+        .timeStamp(timestamp).build();
     return productOrderService.paymentNotifyWechat(body, signatureHeader);
   }
+
   @PostMapping("{id}/cancel")
   public Boolean cancel(@PathVariable String id) {
     return productOrderService.cancel(id);

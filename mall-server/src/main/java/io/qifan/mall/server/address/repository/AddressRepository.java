@@ -18,7 +18,7 @@ public interface AddressRepository extends JRepository<Address, String> {
   AddressFetcher COMPLEX_FETCHER = AddressFetcher.$.allScalarFields()
       .creator(UserFetcher.$.phone().nickname())
       .editor(UserFetcher.$.phone().nickname());
-  AddressFetcher SIMPLE_FETCHER = AddressFetcher.$.allScalarFields();;
+  AddressFetcher SIMPLE_FETCHER = AddressFetcher.$.allScalarFields();
 
   default Page<Address> findPage(QueryRequest<AddressSpec> queryRequest, Fetcher<Address> fetcher) {
     AddressSpec query = queryRequest.getQuery();

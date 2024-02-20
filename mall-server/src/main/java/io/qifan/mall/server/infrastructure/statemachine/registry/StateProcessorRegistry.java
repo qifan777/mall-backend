@@ -18,7 +18,7 @@ public class StateProcessorRegistry implements BeanPostProcessor {
   /**
    * 第一层key是订单状态。 第二层key是订单状态对应的事件，一个状态可以有多个事件。 第三层key是具体场景code，场景下对应的多个处理器，需要后续进行过滤选择出一个具体的执行。
    */
-  private static Map<String, Map<String, Map<String, List<AbstractStateProcessor>>>> stateProcessorMap =
+  private static final Map<String, Map<String, Map<String, List<AbstractStateProcessor>>>> stateProcessorMap =
       new ConcurrentHashMap<>();
 
   public static List<AbstractStateProcessor> acquireStateProcessor(String orderState,
@@ -44,7 +44,8 @@ public class StateProcessorRegistry implements BeanPostProcessor {
     return bean;
   }
 
-  private <E extends StateProcessor<T, C>, T, C> void initProcessorMap(String[] states, String event,
+  private <E extends StateProcessor<T, C>, T, C> void initProcessorMap(String[] states,
+      String event,
       String[] bizCodes,
       String[] sceneIds,
       Map<String, Map<String, Map<String, List<E>>>> map,
