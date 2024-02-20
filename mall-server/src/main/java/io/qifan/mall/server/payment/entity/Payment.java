@@ -1,5 +1,6 @@
 package io.qifan.mall.server.payment.entity;
 
+import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.dict.model.DictConstants;
@@ -13,6 +14,7 @@ import org.babyfish.jimmer.sql.Entity;
 
 
 @Entity
+@GenEntity
 public interface Payment extends BaseEntity {
 
   @GenField(value = "支付类型", order = 1, type = ItemType.SELECTABLE, dictEnName = DictConstants.PAY_TYPE)

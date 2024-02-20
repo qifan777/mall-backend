@@ -22,5 +22,20 @@ specification ProductOrderSpec {
     le(editedTime)
     creator {
       id
+      phone
+    }
+    items {
+      productSku {
+        name
+      }
+    }
+    payment {
+      payType
+      ge(payTime)
+      le(payTime)
+      tradeNo
+    }
+    address {
+      phoneNumber
     }
 }
