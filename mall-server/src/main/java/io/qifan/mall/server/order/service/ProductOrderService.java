@@ -20,8 +20,10 @@ import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.processor.DeliverContext;
 import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
+import io.qifan.mall.server.order.service.processor.PaidRefundWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
 import io.qifan.mall.server.payment.entity.PaymentFetcher;
+import io.qifan.mall.server.refund.entity.RefundRecord;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -140,5 +142,23 @@ public class ProductOrderService {
     R<Boolean> res = stateMachine.action(
         new StateContext<>(stateEvent, deliverContext));
     return res.getResult();
+  }
+
+  public Boolean refund(RefundRecord refundRecord) {
+    ProductOrder orderInfo = productOrderRepository.findById(refundRecord.orderId(),
+            ProductOrderFetcher.$.creator(true).payment(PaymentFetcher.$.payType()))
+        .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "订单不存在"));
+    StateEvent stateEvent = StateEvent.builder()
+        .orderState(orderInfo.status().getKeyEnName())
+        .eventType("REFUND")
+        .sceneId(orderInfo.payment().payType().getKeyEnName())
+        .businessCode("PRODUCT_ORDER")
+        .build();
+    PaidRefundWeChatContext paidRefundWeChatContext = new PaidRefundWeChatContext().setRefundRecord(
+        refundRecord);
+    stateMachine.action(
+        new StateContext<>(stateEvent, paidRefundWeChatContext));
+    cancel(refundRecord.orderId());
+    return true;
   }
 }

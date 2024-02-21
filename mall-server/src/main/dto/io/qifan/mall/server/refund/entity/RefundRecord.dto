@@ -1,0 +1,17 @@
+
+input RefundRecordInput {
+    #allScalars(RefundRecord)
+    id?
+}
+
+specification RefundRecordSpec {
+    #allScalars
+    like/i(reason)
+    like/i(orderId)
+    like/i(trackingNumber)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}
