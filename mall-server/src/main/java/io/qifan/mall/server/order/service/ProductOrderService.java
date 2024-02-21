@@ -17,6 +17,7 @@ import io.qifan.mall.server.order.entity.ProductOrderFetcher;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
+import io.qifan.mall.server.order.service.processor.DeliverContext;
 import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
@@ -123,5 +124,21 @@ public class ProductOrderService {
     R<String> res = stateMachine.action(
         new StateContext<>(stateEvent, orderInfo));
     return res.isSuccess();
+  }
+
+  public Boolean deliver(String id, String trackingNumber) {
+    ProductOrder orderInfo = productOrderRepository.findById(id)
+        .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "订单不存在"));
+    StateEvent stateEvent = StateEvent.builder()
+        .orderState(orderInfo.status().getKeyEnName())
+        .eventType("DELIVER")
+        .sceneId("*")
+        .businessCode("*")
+        .build();
+    DeliverContext deliverContext = new DeliverContext().setProductOrder(orderInfo)
+        .setTrackingNumber(trackingNumber);
+    R<Boolean> res = stateMachine.action(
+        new StateContext<>(stateEvent, deliverContext));
+    return res.getResult();
   }
 }

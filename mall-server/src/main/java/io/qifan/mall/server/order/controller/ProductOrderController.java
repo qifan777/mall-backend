@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -90,5 +91,12 @@ public class ProductOrderController {
   @PostMapping("{id}/cancel")
   public Boolean cancel(@PathVariable String id) {
     return productOrderService.cancel(id);
+  }
+  @PostMapping("{id}/deliver")
+  public Boolean deliver(@PathVariable String id,@RequestParam String trackingNumber) {
+//    TODO
+//    alter table product_order
+//    add tracking_number varchar(50);
+    return productOrderService.deliver(id,trackingNumber);
   }
 }

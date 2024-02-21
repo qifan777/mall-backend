@@ -10,6 +10,7 @@ import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
 import io.qifan.mall.server.payment.entity.Payment;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import org.babyfish.jimmer.sql.Entity;
@@ -25,6 +26,10 @@ public interface ProductOrder extends BaseEntity {
 
   @GenField(value = "订单状态", order = 1, type = ItemType.SELECTABLE, dictEnName = DictConstants.PRODUCT_ORDER_STATUS)
   ProductOrderStatus status();
+
+  @GenField(value = "物流单号")
+  @Null
+  String trackingNumber();
 
   @OneToOne
   Payment payment();
