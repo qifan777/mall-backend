@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@OrderStateProcessor(state = "TO_BE_PAID", event = "NOTIFY", sceneId = "WE_CHAT_PAY")
+@OrderStateProcessor(state = "TO_BE_PAID", event = "NOTIFY", sceneId = "WE_CHAT_PAY", bizCode = "PRODUCT_ORDER")
 @Slf4j
 @AllArgsConstructor
 public class NotifyWeChatProcessor extends AbstractStateProcessor<String, NotifyWeChatContext> {

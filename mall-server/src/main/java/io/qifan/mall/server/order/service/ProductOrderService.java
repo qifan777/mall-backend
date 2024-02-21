@@ -62,7 +62,7 @@ public class ProductOrderService {
         .orderState(ProductOrderStatus.TO_BE_CREATE.getKeyEnName())
         .eventType("CREATE")
         .sceneId("*")
-        .businessCode("*").build();
+        .businessCode("PRODUCT_ORDER").build();
     NewCreateContext newCreateContext = new NewCreateContext().setProductOrderInput(
         productOrderInput);
     R<String> res = stateMachine.action(new StateContext<>(stateEvent, newCreateContext));
@@ -80,7 +80,7 @@ public class ProductOrderService {
         .orderState(productOrder.status().getKeyEnName())
         .eventType("PREPAY")
         .sceneId(productOrder.payment().payType().getKeyEnName())
-        .businessCode("*")
+        .businessCode("PRODUCT_ORDER")
         .build();
     R<JsapiResult> res = stateMachine.action(
         new StateContext<>(stateEvent, new PrepayWeChatContext()
@@ -103,7 +103,7 @@ public class ProductOrderService {
         .orderState(productOrder.status().getKeyEnName())
         .eventType("NOTIFY")
         .sceneId(productOrder.payment().payType().getKeyEnName())
-        .businessCode("*")
+        .businessCode("PRODUCT_ORDER")
         .build();
     R<String> res = stateMachine.action(
         new StateContext<>(stateEvent, new NotifyWeChatContext()
@@ -118,7 +118,7 @@ public class ProductOrderService {
         .orderState(orderInfo.status().getKeyEnName())
         .eventType("CANCEL")
         .sceneId("*")
-        .businessCode("*")
+        .businessCode("PRODUCT_ORDER")
         .build();
     R<String> res = stateMachine.action(
         new StateContext<>(stateEvent, orderInfo));

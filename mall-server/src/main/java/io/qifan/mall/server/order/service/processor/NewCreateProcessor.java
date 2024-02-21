@@ -18,10 +18,8 @@ import io.qifan.mall.server.product.sku.entity.ProductSkuTable;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@OrderStateProcessor(state = "TO_BE_CREATE", event = "CREATE")
-@Service
+@OrderStateProcessor(state = "TO_BE_CREATE", event = "CREATE", bizCode = "PRODUCT_ORDER")
 @AllArgsConstructor
 public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreateContext> {
 
@@ -97,7 +95,6 @@ public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreate
           draft
               .setId(orderId)
               .setStatus(ProductOrderStatus.valueOf(nextState));
-
           // 设置支付详情
           draft.setPayment(context.getContext().getPayment());
         });

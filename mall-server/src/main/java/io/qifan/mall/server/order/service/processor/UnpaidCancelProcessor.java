@@ -17,10 +17,8 @@ import io.qifan.mall.server.product.sku.entity.ProductSkuDraft;
 import io.qifan.mall.server.product.sku.entity.ProductSkuFetcher;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@OrderStateProcessor(state = "TO_BE_PAID", event = "CANCEL")
-@Service
+@OrderStateProcessor(state = "TO_BE_PAID", event = "CANCEL", bizCode = "PRODUCT_ORDER")
 @AllArgsConstructor
 public class UnpaidCancelProcessor extends AbstractStateProcessor<String, ProductOrder> {
 

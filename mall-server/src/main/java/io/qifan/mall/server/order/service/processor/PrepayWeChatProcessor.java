@@ -35,7 +35,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
-@OrderStateProcessor(state = "TO_BE_PAID", event = "PREPAY", sceneId = "WE_CHAT_PAY")
+@OrderStateProcessor(state = "TO_BE_PAID", event = "PREPAY", sceneId = "WE_CHAT_PAY", bizCode = "PRODUCT_ORDER")
 @Slf4j
 @AllArgsConstructor
 public class PrepayWeChatProcessor extends
