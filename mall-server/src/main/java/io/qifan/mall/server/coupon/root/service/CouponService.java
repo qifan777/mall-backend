@@ -40,6 +40,7 @@ public class CouponService {
     couponRepository.deleteAllById(ids);
     return true;
   }
+
   public void countCheck(String id) {
     Coupon coupon = couponRepository.findById(id)
         .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "优惠券不存在"));

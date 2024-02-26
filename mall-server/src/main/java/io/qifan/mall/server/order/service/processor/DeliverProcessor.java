@@ -12,7 +12,7 @@ import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@OrderStateProcessor(state = "TO_BE_DELIVERED", event = "DELIVER",bizCode = "PRODUCT_ORDER")
+@OrderStateProcessor(state = "TO_BE_DELIVERED", event = "DELIVER", bizCode = "PRODUCT_ORDER")
 @AllArgsConstructor
 @Slf4j
 public class DeliverProcessor extends AbstractStateProcessor<Boolean, DeliverContext> {

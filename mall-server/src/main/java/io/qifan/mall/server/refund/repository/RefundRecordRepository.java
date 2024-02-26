@@ -8,6 +8,7 @@ import io.qifan.mall.server.refund.entity.dto.RefundRecordSpec;
 import io.qifan.mall.server.user.entity.UserFetcher;
 import org.babyfish.jimmer.spring.repository.JRepository;
 import org.babyfish.jimmer.spring.repository.SpringOrders;
+import org.babyfish.jimmer.spring.repository.support.SpringPageFactory;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,11 @@ public interface RefundRecordRepository extends JRepository<RefundRecord, String
       Fetcher<RefundRecord> fetcher) {
     RefundRecordSpec query = queryRequest.getQuery();
     Pageable pageable = queryRequest.toPageable();
-    return pager(pageable).execute(sql().createQuery(refundRecordTable)
+    return sql().createQuery(refundRecordTable)
         .where(query)
         .orderBy(SpringOrders.toOrders(refundRecordTable, pageable.getSort()))
-        .select(refundRecordTable.fetch(fetcher)));
+        .select(refundRecordTable.fetch(fetcher))
+        .fetchPage(queryRequest.getPageNum() - 1, queryRequest.getPageSize(),
+            SpringPageFactory.getInstance());
   }
 }

@@ -8,6 +8,7 @@ import io.qifan.mall.server.product.category.entity.dto.ProductCategorySpec;
 import io.qifan.mall.server.user.entity.UserFetcher;
 import org.babyfish.jimmer.spring.repository.JRepository;
 import org.babyfish.jimmer.spring.repository.SpringOrders;
+import org.babyfish.jimmer.spring.repository.support.SpringPageFactory;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,11 @@ public interface ProductCategoryRepository extends JRepository<ProductCategory, 
       Fetcher<ProductCategory> fetcher) {
     ProductCategorySpec query = queryRequest.getQuery();
     Pageable pageable = queryRequest.toPageable();
-    return pager(pageable).execute(sql().createQuery(productCategoryTable)
+    return sql().createQuery(productCategoryTable)
         .where(query)
         .orderBy(SpringOrders.toOrders(productCategoryTable, pageable.getSort()))
-        .select(productCategoryTable.fetch(fetcher)));
+        .select(productCategoryTable.fetch(fetcher))
+        .fetchPage(queryRequest.getPageNum() - 1, queryRequest.getPageSize(),
+            SpringPageFactory.getInstance());
   }
 }

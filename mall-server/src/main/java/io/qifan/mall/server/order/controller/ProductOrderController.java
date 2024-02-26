@@ -92,11 +92,12 @@ public class ProductOrderController {
   public Boolean cancel(@PathVariable String id) {
     return productOrderService.cancel(id);
   }
+
   @PostMapping("{id}/deliver")
-  public Boolean deliver(@PathVariable String id,@RequestParam String trackingNumber) {
+  public Boolean deliver(@PathVariable String id, @RequestParam String trackingNumber) {
 //    TODO
 //    alter table product_order
 //    add tracking_number varchar(50);
-    return productOrderService.deliver(id,trackingNumber);
+    return productOrderService.deliver(id, trackingNumber);
   }
 }

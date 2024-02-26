@@ -13,6 +13,7 @@ import io.qifan.mall.server.product.sku.entity.ProductSkuFetcher;
 import io.qifan.mall.server.user.entity.UserFetcher;
 import org.babyfish.jimmer.spring.repository.JRepository;
 import org.babyfish.jimmer.spring.repository.SpringOrders;
+import org.babyfish.jimmer.spring.repository.support.SpringPageFactory;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,9 +36,11 @@ public interface ProductOrderRepository extends JRepository<ProductOrder, String
       Fetcher<ProductOrder> fetcher) {
     ProductOrderSpec query = queryRequest.getQuery();
     Pageable pageable = queryRequest.toPageable();
-    return pager(pageable).execute(sql().createQuery(productOrderTable)
+    return sql().createQuery(productOrderTable)
         .where(query)
         .orderBy(SpringOrders.toOrders(productOrderTable, pageable.getSort()))
-        .select(productOrderTable.fetch(fetcher)));
+        .select(productOrderTable.fetch(fetcher))
+        .fetchPage(queryRequest.getPageNum() - 1, queryRequest.getPageSize(),
+            SpringPageFactory.getInstance());
   }
 }

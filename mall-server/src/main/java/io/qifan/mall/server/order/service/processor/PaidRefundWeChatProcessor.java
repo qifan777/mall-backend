@@ -11,7 +11,6 @@ import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.common.model.R;
 import io.qifan.mall.server.dict.model.DictConstants.ProductOrderStatus;
 import io.qifan.mall.server.dict.model.DictConstants.RefundStatus;
-import io.qifan.mall.server.infrastructure.statemachine.machine.StateMachine;
 import io.qifan.mall.server.infrastructure.statemachine.model.StateContext;
 import io.qifan.mall.server.infrastructure.statemachine.processor.AbstractStateProcessor;
 import io.qifan.mall.server.infrastructure.statemachine.processor.OrderStateProcessor;
@@ -80,7 +79,6 @@ public class PaidRefundWeChatProcessor extends
       log.error("退款失败：", e);
       throw new BusinessException(ResultCode.Fail, "退款失败");
     }
-    ;
     return R.ok();
   }
 

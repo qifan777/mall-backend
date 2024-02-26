@@ -9,6 +9,7 @@ import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.user.entity.UserFetcher;
 import org.babyfish.jimmer.spring.repository.JRepository;
 import org.babyfish.jimmer.spring.repository.SpringOrders;
+import org.babyfish.jimmer.spring.repository.support.SpringPageFactory;
 import org.babyfish.jimmer.sql.fetcher.Fetcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +29,11 @@ public interface CouponUserRepository extends JRepository<CouponUser, String> {
       Fetcher<CouponUser> fetcher) {
     CouponUserSpec query = queryRequest.getQuery();
     Pageable pageable = queryRequest.toPageable();
-    return pager(pageable).execute(sql().createQuery(couponUserTable)
+    return sql().createQuery(couponUserTable)
         .where(query)
         .orderBy(SpringOrders.toOrders(couponUserTable, pageable.getSort()))
-        .select(couponUserTable.fetch(fetcher)));
+        .select(couponUserTable.fetch(fetcher))
+        .fetchPage(queryRequest.getPageNum() - 1, queryRequest.getPageSize(),
+            SpringPageFactory.getInstance());
   }
 }
