@@ -2,12 +2,18 @@ package io.qifan.mall.server.coupon.user.service;
 
 import io.qifan.infrastructure.common.constants.ResultCode;
 import io.qifan.infrastructure.common.exception.BusinessException;
+import io.qifan.mall.server.coupon.root.service.CouponService;
 import io.qifan.mall.server.coupon.user.entity.CouponUser;
+import io.qifan.mall.server.coupon.user.entity.CouponUserDraft;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserInput;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserSpec;
+import io.qifan.mall.server.coupon.user.model.GiftCouponInput;
 import io.qifan.mall.server.coupon.user.repository.CouponUserRepository;
+import io.qifan.mall.server.dict.model.DictConstants.CouponReceiveType;
+import io.qifan.mall.server.dict.model.DictConstants.CouponUseStatus;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponUserService {
 
   private final CouponUserRepository couponUserRepository;
+  private final CouponService couponService;
 
   public CouponUser findById(String id) {
     return couponUserRepository.findById(id, CouponUserRepository.COMPLEX_FETCHER)
@@ -38,6 +45,19 @@ public class CouponUserService {
 
   public boolean delete(List<String> ids) {
     couponUserRepository.deleteAllById(ids);
+    return true;
+  }
+
+  public boolean gift(GiftCouponInput giftCoupon) {
+    couponService.countCheck(giftCoupon.getCouponId());
+    List<CouponUser> couponUsers = giftCoupon.getUserIds().stream()
+        .map(userId -> CouponUserDraft.$.produce(draft -> {
+          draft.setCouponId(giftCoupon.getCouponId())
+              .setUserId(userId)
+              .setReceiveType(CouponReceiveType.GIFT)
+              .setStatus(CouponUseStatus.UNUSED);
+        })).collect(Collectors.toList());
+    couponUserRepository.saveEntities(couponUsers);
     return true;
   }
 }

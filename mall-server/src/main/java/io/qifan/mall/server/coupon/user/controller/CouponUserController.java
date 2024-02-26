@@ -3,6 +3,7 @@ package io.qifan.mall.server.coupon.user.controller;
 import io.qifan.mall.server.coupon.user.entity.CouponUser;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserInput;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserSpec;
+import io.qifan.mall.server.coupon.user.model.GiftCouponInput;
 import io.qifan.mall.server.coupon.user.repository.CouponUserRepository;
 import io.qifan.mall.server.coupon.user.service.CouponUserService;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
@@ -46,5 +47,10 @@ public class CouponUserController {
   @PostMapping("delete")
   public Boolean delete(@RequestBody List<String> ids) {
     return couponUserService.delete(ids);
+  }
+
+  @PostMapping("gift")
+  public boolean gift(@RequestBody @Validated GiftCouponInput giftCouponInput) {
+    return couponUserService.gift(giftCouponInput);
   }
 }
