@@ -1,0 +1,19 @@
+
+input CouponInput {
+    #allScalars(Coupon)
+    id?
+}
+
+specification CouponSpec {
+    #allScalars
+    like/i(name)
+    ge(effectiveDate)
+    le(effectiveDate)
+    ge(expirationDate)
+    le(expirationDate)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}
