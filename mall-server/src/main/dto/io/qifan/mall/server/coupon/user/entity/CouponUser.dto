@@ -1,0 +1,18 @@
+
+input CouponUserInput {
+    #allScalars(CouponUser)
+    id?
+    couponId
+    userId
+}
+
+specification CouponUserSpec {
+    #allScalars
+    id(user)
+    id(coupon)
+    id
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}
