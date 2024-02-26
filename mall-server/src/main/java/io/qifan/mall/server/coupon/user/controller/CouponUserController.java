@@ -1,5 +1,6 @@
 package io.qifan.mall.server.coupon.user.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import io.qifan.mall.server.coupon.user.entity.CouponUser;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserInput;
 import io.qifan.mall.server.coupon.user.entity.dto.CouponUserSpec;
@@ -52,5 +53,11 @@ public class CouponUserController {
   @PostMapping("gift")
   public boolean gift(@RequestBody @Validated GiftCouponInput giftCouponInput) {
     return couponUserService.gift(giftCouponInput);
+  }
+
+  @PostMapping("user")
+  public Page<@FetchBy(value = "COMPLEX_FETCHER") CouponUser> queryByUser(@RequestBody QueryRequest<CouponUserSpec> queryRequest) {
+    queryRequest.getQuery().setUserId(StpUtil.getLoginIdAsString());
+    return couponUserService.query(queryRequest);
   }
 }

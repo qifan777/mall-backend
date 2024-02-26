@@ -20,7 +20,7 @@ public interface CouponUserRepository extends JRepository<CouponUser, String> {
   CouponUserFetcher COMPLEX_FETCHER = CouponUserFetcher.$.allScalarFields()
       .creator(UserFetcher.$.phone().nickname())
       .editor(UserFetcher.$.phone().nickname())
-      .coupon(CouponFetcher.$.name())
+      .coupon(CouponFetcher.$.allScalarFields())
       .user(UserFetcher.$.nickname().phone())
       .couponId()
       .userId();
