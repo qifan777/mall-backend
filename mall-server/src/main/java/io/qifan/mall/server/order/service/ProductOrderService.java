@@ -7,6 +7,8 @@ import com.github.binarywang.wxpay.service.WxPayService;
 import io.qifan.infrastructure.common.constants.ResultCode;
 import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.common.model.R;
+import io.qifan.mall.server.coupon.user.entity.CouponUser;
+import io.qifan.mall.server.coupon.user.service.CouponUserService;
 import io.qifan.mall.server.dict.model.DictConstants.ProductOrderStatus;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.infrastructure.statemachine.machine.StateMachine;
@@ -15,6 +17,7 @@ import io.qifan.mall.server.infrastructure.statemachine.model.StateContext.State
 import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.ProductOrderFetcher;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
+import io.qifan.mall.server.order.entity.dto.ProductOrderInput.TargetOf_items;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.processor.DeliverContext;
@@ -23,7 +26,10 @@ import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
 import io.qifan.mall.server.order.service.processor.PaidRefundWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
 import io.qifan.mall.server.payment.entity.PaymentFetcher;
+import io.qifan.mall.server.product.sku.entity.ProductSku;
+import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import io.qifan.mall.server.refund.entity.RefundRecord;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,9 +44,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProductOrderService {
 
+  private final ProductSkuRepository productSkuRepository;
+
   private final ProductOrderRepository productOrderRepository;
   private final StateMachine stateMachine;
   private final WxPayService wxPayService;
+  private final CouponUserService couponUserService;
 
   public ProductOrder findById(String id) {
     return productOrderRepository.findById(id, ProductOrderRepository.COMPLEX_FETCHER)
@@ -160,5 +169,9 @@ public class ProductOrderService {
         new StateContext<>(stateEvent, paidRefundWeChatContext));
     cancel(refundRecord.orderId());
     return true;
+  }
+
+  public List<CouponUser> availableCoupons(BigDecimal price) {
+    return couponUserService.availableCoupons(price);
   }
 }
