@@ -11,6 +11,9 @@ input ProductOrderInput {
     payment{
       payType
     }
+    couponUser{
+      id
+    }
 }
 specification ProductOrderSpec {
     #allScalars

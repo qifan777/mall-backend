@@ -4,6 +4,7 @@ import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.address.entity.Address;
+import io.qifan.mall.server.coupon.user.entity.CouponUser;
 import io.qifan.mall.server.dict.model.DictConstants;
 import io.qifan.mall.server.dict.model.DictConstants.ProductOrderStatus;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
@@ -36,6 +37,9 @@ public interface ProductOrder extends BaseEntity {
 
   @OneToOne
   Address address();
+  @OneToOne
+  @Null
+  CouponUser couponUser();
 
   @OneToMany(mappedBy = "productOrder")
   @Valid

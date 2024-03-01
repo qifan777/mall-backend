@@ -1,0 +1,7 @@
+PaymentPriceView {
+  productAmount
+  couponAmount
+  deliveryFee
+  vipAmount
+  payAmount
+}

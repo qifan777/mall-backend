@@ -12,11 +12,12 @@ import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.ProductOrderDraft;
 import io.qifan.mall.server.order.entity.ProductOrderItemDraft;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
+import io.qifan.mall.server.order.service.ProductOrderService;
 import io.qifan.mall.server.payment.entity.PaymentDraft;
+import io.qifan.mall.server.payment.entity.dto.PaymentPriceView;
 import io.qifan.mall.server.product.sku.entity.ProductSku;
 import io.qifan.mall.server.product.sku.entity.ProductSkuTable;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 
 @OrderStateProcessor(state = "TO_BE_CREATE", event = "CREATE", bizCode = "PRODUCT_ORDER")
@@ -25,36 +26,30 @@ public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreate
 
   private final ProductOrderRepository productOrderRepository;
   private final ProductSkuRepository productSkuRepository;
+  private final ProductOrderService productOrderService;
 
   @Override
   public void prepare(StateContext<NewCreateContext> context) {
+    PaymentPriceView calculated = productOrderService.calculate(
+        context.getContext().getProductOrderInput());
     context.getContext().setPayment(PaymentDraft.$.produce(
         context.getContext().getProductOrderInput().getPayment().toEntity(),
         draft -> draft
             .setId(IdUtil.fastSimpleUUID())
-            .setCouponAmount(BigDecimal.ZERO)
+            .setCouponAmount(calculated.getCouponAmount())
             // 商品价格计算
-            .setProductAmount(BigDecimal.valueOf(0.01))
-            // 实际支付价格计算
-            .setPayAmount(BigDecimal.valueOf(0.01))
+            .setProductAmount(calculated.getProductAmount())
             // 运费计算
-            .setDeliveryFee(BigDecimal.ZERO)
+            .setDeliveryFee(calculated.getDeliveryFee())
             // VIP价格计算
-            .setVipAmount(BigDecimal.ZERO)));
+            .setVipAmount(calculated.getVipAmount())
+            // 实际支付价格计算
+            .setPayAmount(calculated.getPayAmount())
+    ));
   }
 
   @Override
-  public R<String> check(StateContext<NewCreateContext> context) {
-    context.getContext().getProductOrderInput().getItems().forEach(item -> {
-      ProductSku productSku = productSkuRepository
-          .findById(item.getProductSkuId())
-          .orElseThrow(() -> new BusinessException(
-              ResultCode.NotFindError, "商品SKU不存在"));
-      if (productSku.stock() - item.getSkuCount() <= 0) {
-        throw new BusinessException(ResultCode.ValidateError, "商品库存不足");
-      }
-      // 优惠券校验
-    });
+  public R<String> check(StateContext<NewCreateContext> context) {;
     return R.ok();
   }
 

@@ -25,7 +25,10 @@ import io.qifan.mall.server.order.service.processor.NewCreateContext;
 import io.qifan.mall.server.order.service.processor.NotifyWeChatContext;
 import io.qifan.mall.server.order.service.processor.PaidRefundWeChatContext;
 import io.qifan.mall.server.order.service.processor.PrepayWeChatContext;
+import io.qifan.mall.server.payment.entity.Payment;
+import io.qifan.mall.server.payment.entity.PaymentDraft;
 import io.qifan.mall.server.payment.entity.PaymentFetcher;
+import io.qifan.mall.server.payment.entity.dto.PaymentPriceView;
 import io.qifan.mall.server.product.sku.entity.ProductSku;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import io.qifan.mall.server.refund.entity.RefundRecord;
@@ -37,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Slf4j
@@ -173,5 +177,42 @@ public class ProductOrderService {
 
   public List<CouponUser> availableCoupons(BigDecimal price) {
     return couponUserService.availableCoupons(price);
+  }
+
+  public PaymentPriceView calculate(ProductOrderInput productOrderInput) {
+    Payment produce = PaymentDraft.$.produce(draft -> {
+      draft.setProductAmount(BigDecimal.ZERO)
+          .setVipAmount(BigDecimal.ZERO)
+          .setDeliveryFee(BigDecimal.ZERO)
+          .setCouponAmount(BigDecimal.ZERO);
+
+      BigDecimal totalPrice = BigDecimal.ZERO;
+      for (TargetOf_items item : productOrderInput.getItems()) {
+        ProductSku productSku = productSkuRepository.findById(item.getProductSkuId())
+            .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "商品不存在"));
+        if (productSku.stock() - item.getSkuCount() <= 0) {
+          throw new BusinessException(ResultCode.ValidateError, "商品库存不足");
+        }
+        BigDecimal price = productSku.price().multiply(BigDecimal.valueOf(item.getSkuCount()));
+        totalPrice = totalPrice.add(price);
+      }
+      // 计算商品总价
+      draft.setProductAmount(totalPrice);
+      if (productOrderInput.getCouponUser() != null && StringUtils.hasText(
+          productOrderInput.getCouponUser().getId())) {
+        // 计算优惠券优化价格
+        draft.setCouponAmount(
+            couponUserService.calculate(productOrderInput.getCouponUser().getId(), totalPrice));
+      }
+      // 计算运费
+      // 计算VIP优惠价格
+      // 计算实际支付价格
+      draft.setPayAmount(
+          draft.productAmount().add(draft.deliveryFee()).subtract(draft.couponAmount())
+              .subtract(draft.vipAmount())
+      );
+
+    });
+    return PaymentPriceView.of(produce);
   }
 }

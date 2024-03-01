@@ -3,6 +3,7 @@ package io.qifan.mall.server.coupon.user.service;
 import cn.dev33.satoken.stp.StpUtil;
 import io.qifan.infrastructure.common.constants.ResultCode;
 import io.qifan.infrastructure.common.exception.BusinessException;
+import io.qifan.mall.server.coupon.root.entity.Coupon;
 import io.qifan.mall.server.coupon.root.service.CouponService;
 import io.qifan.mall.server.coupon.user.entity.CouponUser;
 import io.qifan.mall.server.coupon.user.entity.CouponUserDraft;
@@ -12,9 +13,11 @@ import io.qifan.mall.server.coupon.user.entity.dto.CouponUserSpec;
 import io.qifan.mall.server.coupon.user.model.GiftCouponInput;
 import io.qifan.mall.server.coupon.user.repository.CouponUserRepository;
 import io.qifan.mall.server.dict.model.DictConstants.CouponReceiveType;
+import io.qifan.mall.server.dict.model.DictConstants.CouponType;
 import io.qifan.mall.server.dict.model.DictConstants.CouponUseStatus;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,4 +79,27 @@ public class CouponUserService {
         .select(t.fetch(CouponUserRepository.COMPLEX_FETCHER))
         .execute();
   }
+
+  public BigDecimal calculate(String id, BigDecimal amount) {
+    CouponUserTable t = CouponUserTable.$;
+    CouponUser couponUser = couponUserRepository.sql().createQuery(t)
+        .where(t.userId().eq(StpUtil.getLoginIdAsString()))
+        .where(t.status().eq(CouponUseStatus.UNUSED))
+        .where(t.coupon().thresholdAmount().le(amount))
+        .where(t.coupon().effectiveDate().le(LocalDateTime.now()))
+        .where(t.coupon().expirationDate().ge(LocalDateTime.now()))
+        .where(t.id().eq(id))
+        .select(t.fetch(CouponUserRepository.COMPLEX_FETCHER))
+        .fetchOptional()
+        .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "优惠券失效"));
+    Coupon coupon = couponUser.coupon();
+    if (coupon.type().equals(CouponType.DISCOUNT)) {
+      return BigDecimal.TEN.subtract(coupon.discount()).divide(BigDecimal.TEN, RoundingMode.DOWN)
+          .multiply(amount);
+    } else if (coupon.type().equals(CouponType.REDUCE)) {
+      return coupon.amount();
+    }
+    throw new BusinessException(ResultCode.ParamSetIllegal, "优惠券类型错误");
+  }
+
 }

@@ -3,7 +3,6 @@ package io.qifan.mall.server.order.controller;
 import cn.dev33.satoken.stp.StpUtil;
 import com.github.binarywang.wxpay.bean.notify.SignatureHeader;
 import com.github.binarywang.wxpay.bean.result.WxPayUnifiedOrderV3Result;
-import io.qifan.infrastructure.common.model.R;
 import io.qifan.mall.server.coupon.user.entity.CouponUser;
 import io.qifan.mall.server.coupon.user.repository.CouponUserRepository;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
@@ -13,6 +12,7 @@ import io.qifan.mall.server.order.entity.dto.ProductOrderSpec;
 import io.qifan.mall.server.order.entity.dto.ProductOrderSpec.TargetOf_creator;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.ProductOrderService;
+import io.qifan.mall.server.payment.entity.dto.PaymentPriceView;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -99,9 +99,6 @@ public class ProductOrderController {
 
   @PostMapping("{id}/deliver")
   public Boolean deliver(@PathVariable String id, @RequestParam String trackingNumber) {
-//    TODO
-//    alter table product_order
-//    add tracking_number varchar(50);
     return productOrderService.deliver(id, trackingNumber);
   }
 
@@ -109,5 +106,10 @@ public class ProductOrderController {
   public List<@FetchBy(value = "COMPLEX_FETCHER", ownerType = CouponUserRepository.class) CouponUser> availableCoupons(
       @RequestParam BigDecimal price) {
     return productOrderService.availableCoupons(price);
+  }
+
+  @PostMapping("calculate")
+  public PaymentPriceView calculate(@Validated @RequestBody ProductOrderInput productOrderInput) {
+    return productOrderService.calculate(productOrderInput);
   }
 }
