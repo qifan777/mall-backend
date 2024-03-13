@@ -1,0 +1,15 @@
+
+input WalletInput {
+    #allScalars(Wallet)
+    id?
+}
+
+specification WalletSpec {
+    #allScalars
+    like/i(password)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}

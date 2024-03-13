@@ -14,12 +14,15 @@ public interface ${type.typeName} extends JRepository<${entityType.typeName}, St
     ${entityType.typeName}Fetcher COMPLEX_FETCHER = ${entityType.typeName}Fetcher.$.allScalarFields()
         .creator(UserFetcher.$.phone().nickname())
         .editor(UserFetcher.$.phone().nickname());
-    default Page<${entityType.typeName}> findPage(QueryRequest<${entityType.typeName}Spec> queryRequest, Fetcher<${entityType.typeName}> fetcher) {
-        ${entityType.typeName}Spec query = queryRequest.getQuery();
-        Pageable pageable = queryRequest.toPageable();
-        return pager(pageable).execute(sql().createQuery(${uncapitalizeTypeName}Table)
-                .where(query)
-                .orderBy(SpringOrders.toOrders(${uncapitalizeTypeName}Table, pageable.getSort()))
-                .select(${uncapitalizeTypeName}Table.fetch(fetcher)));
-    }
+  default Page<${entityType.typeName}> findPage(QueryRequest<${entityType.typeName}Spec> queryRequest,
+      Fetcher<${entityType.typeName}> fetcher) {
+    ${entityType.typeName}Spec query = queryRequest.getQuery();
+    Pageable pageable = queryRequest.toPageable();
+    return sql().createQuery(${uncapitalizeTypeName}Table)
+        .where(query)
+        .orderBy(SpringOrders.toOrders(${uncapitalizeTypeName}Table, pageable.getSort()))
+        .select(${uncapitalizeTypeName}Table.fetch(fetcher))
+        .fetchPage(queryRequest.getPageNum() - 1, queryRequest.getPageSize(),
+            SpringPageFactory.getInstance());
+  }
 }

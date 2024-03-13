@@ -1,0 +1,17 @@
+
+input AgentInput {
+    #allScalars(Agent)
+    id?
+}
+
+specification AgentSpec {
+    #allScalars
+    like/i(tenantId)
+    like/i(parentId)
+    like/i(agentNo)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

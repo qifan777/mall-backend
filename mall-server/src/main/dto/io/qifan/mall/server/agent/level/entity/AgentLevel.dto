@@ -1,0 +1,15 @@
+
+input AgentLevelInput {
+    #allScalars(AgentLevel)
+    id?
+}
+
+specification AgentLevelSpec {
+    #allScalars
+    like/i(tenantId)
+    like/i(id)
+    ge(createdTime)
+    le(createdTime)
+    ge(editedTime)
+    le(editedTime)
+}

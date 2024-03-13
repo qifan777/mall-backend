@@ -8,6 +8,7 @@ import io.qifan.infrastructure.common.constants.ResultCode;
 import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.sms.SmsService;
 import io.qifan.mall.server.auth.model.LoginDevice;
+import io.qifan.mall.server.coupon.user.event.UserEvent;
 import io.qifan.mall.server.infrastructure.model.QueryRequest;
 import io.qifan.mall.server.user.entity.User;
 import io.qifan.mall.server.user.entity.UserDraft;
@@ -24,6 +25,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,7 @@ public class UserWeChatService {
   private final SmsService smsService;
   private final UserRepository userRepository;
   private final WxMaService wxMaService;
+  private final ApplicationEventPublisher eventPublisher;
 
   public UserWeChat findById(String id) {
     return userWeChatRepository.findById(id, UserWeChatRepository.COMPLEX_FETCHER)
@@ -105,6 +108,8 @@ public class UserWeChatService {
                 .setOpenId(openid);
           }));
         });
+    eventPublisher.publishEvent(
+        new UserEvent.UserCreateEvent(userWeChat.user().id(), registerInput.getInviteCode()));
     StpUtil.login(userWeChat.user().id(), LoginDevice.MP_WECHAT);
     return StpUtil.getTokenInfo();
   }

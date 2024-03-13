@@ -1,0 +1,16 @@
+
+input WalletRecordInput {
+    #allScalars(WalletRecord)
+    id?
+}
+
+specification WalletRecordSpec {
+    #allScalars
+    like/i(description)
+    like/i(walletId)
+    like/i(id)
+    ge(editedTime)
+    le(editedTime)
+    ge(createdTime)
+    le(createdTime)
+}
