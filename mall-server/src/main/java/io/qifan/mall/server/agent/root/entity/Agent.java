@@ -2,7 +2,9 @@ package io.qifan.mall.server.agent.root.entity;
 
 import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
+import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.agent.level.entity.AgentLevel;
+import io.qifan.mall.server.dict.model.DictConstants;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
 import io.qifan.mall.server.user.entity.User;
 import javax.validation.constraints.Null;
@@ -32,6 +34,7 @@ public interface Agent extends BaseEntity {
    */
   @IdView
   String userId();
+
   @GenField(value = "用户id")
   @OneToOne
   User user();
@@ -39,9 +42,12 @@ public interface Agent extends BaseEntity {
   /**
    * 代理等级
    */
-  @GenField(value = "代理等级")
+  @GenField(value = "代理等级", type = ItemType.SELECTABLE, dictEnName = DictConstants.AGENT_LEVEL)
   @ManyToOne
-  AgentLevel level();
+  AgentLevel agentLevel();
+
+  @IdView
+  String agentLevelId();
 
   /**
    * 上级代理id

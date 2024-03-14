@@ -2,6 +2,10 @@
 input AgentInput {
     #allScalars(Agent)
     id?
+    userId
+    agentLevel{
+      levelName
+    }
 }
 
 specification AgentSpec {
@@ -14,4 +18,8 @@ specification AgentSpec {
     le(createdTime)
     ge(editedTime)
     le(editedTime)
+    id(user)
+    agentLevel{
+      levelName
+    }
 }

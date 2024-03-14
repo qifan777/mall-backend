@@ -3,6 +3,7 @@ package io.qifan.mall.server.agent.record.entity;
 import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.mall.server.agent.root.entity.Agent;
+import io.qifan.mall.server.dict.model.DictConstants.AgentLevel;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
 import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.wallet.record.entity.WalletRecord;
@@ -47,5 +48,10 @@ public interface AgentRebateRecord extends BaseEntity {
 
   @OneToOne
   WalletRecord walletRecord();
+
+  /**
+   * 来自第n级的返佣
+   */
+  AgentLevel fromLevel();
 }
 

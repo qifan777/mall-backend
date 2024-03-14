@@ -14,4 +14,7 @@ specification AgentRebateRecordSpec {
     le(createdTime)
     ge(editedTime)
     le(editedTime)
+    agent{
+      userId
+    }
 }

@@ -18,7 +18,9 @@ public interface AgentRepository extends JRepository<Agent, String> {
 
   AgentTable agentTable = AgentTable.$;
   AgentFetcher COMPLEX_FETCHER = AgentFetcher.$.allScalarFields()
-      .level(AgentLevelFetcher.$.allScalarFields())
+      .agentLevel(AgentLevelFetcher.$.allScalarFields())
+      .userId()
+      .user(UserFetcher.$.phone().nickname())
       .creator(UserFetcher.$.phone().nickname())
       .editor(UserFetcher.$.phone().nickname());
 

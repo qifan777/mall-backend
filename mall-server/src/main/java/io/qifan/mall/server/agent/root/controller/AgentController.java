@@ -56,8 +56,4 @@ public class AgentController {
   public void onUserCreatedEvent(UserCreateEvent userCreateEvent) {
     agentService.invite(userCreateEvent);
   }
-  @EventListener
-  public void onOrderSuccessEvent(OrderSuccessEvent orderSuccessEvent){
-    agentService.rebate(orderSuccessEvent);
-  }
 }
