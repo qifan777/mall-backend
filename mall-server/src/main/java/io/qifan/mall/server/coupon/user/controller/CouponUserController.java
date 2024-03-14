@@ -56,7 +56,8 @@ public class CouponUserController {
   }
 
   @PostMapping("user")
-  public Page<@FetchBy(value = "COMPLEX_FETCHER") CouponUser> queryByUser(@RequestBody QueryRequest<CouponUserSpec> queryRequest) {
+  public Page<@FetchBy(value = "COMPLEX_FETCHER") CouponUser> queryByUser(
+      @RequestBody QueryRequest<CouponUserSpec> queryRequest) {
     queryRequest.getQuery().setUserId(StpUtil.getLoginIdAsString());
     return couponUserService.query(queryRequest);
   }

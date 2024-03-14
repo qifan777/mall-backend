@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 @Transactional
 public class AgentService {
 
+  private static final String CHAR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"; // 邀请码字符池
   private final AgentRepository agentRepository;
   private final AgentLevelRepository agentLevelRepository;
 
@@ -49,8 +50,6 @@ public class AgentService {
     agentRepository.deleteAllById(ids);
     return true;
   }
-
-  private static final String CHAR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"; // 邀请码字符池
 
   public String generateUniqueInvitationCode() {
     Random random = new Random();

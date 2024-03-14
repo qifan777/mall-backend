@@ -1,8 +1,6 @@
 package io.qifan.mall.server.order.service.processor;
 
 import cn.hutool.core.util.IdUtil;
-import io.qifan.infrastructure.common.constants.ResultCode;
-import io.qifan.infrastructure.common.exception.BusinessException;
 import io.qifan.infrastructure.common.model.R;
 import io.qifan.mall.server.dict.model.DictConstants.ProductOrderStatus;
 import io.qifan.mall.server.infrastructure.statemachine.model.StateContext;
@@ -15,7 +13,6 @@ import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.ProductOrderService;
 import io.qifan.mall.server.payment.entity.PaymentDraft;
 import io.qifan.mall.server.payment.entity.dto.PaymentPriceView;
-import io.qifan.mall.server.product.sku.entity.ProductSku;
 import io.qifan.mall.server.product.sku.entity.ProductSkuTable;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import lombok.AllArgsConstructor;
@@ -49,7 +46,8 @@ public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreate
   }
 
   @Override
-  public R<String> check(StateContext<NewCreateContext> context) {;
+  public R<String> check(StateContext<NewCreateContext> context) {
+    ;
     return R.ok();
   }
 

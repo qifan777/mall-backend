@@ -11,9 +11,9 @@ public class DictConstants {
   @Getter
   @AllArgsConstructor
   public enum ${type}{
-  <#list getDictMap()[type] as dict>
-    ${dict.keyEnName()}(${dict.keyId()?c}, "${dict.keyName()}", "${dict.keyEnName()}", ${dict.dictId()?c}, "${dict.dictName()}", "${dict.dictEnName()}", ${dict.orderNum()?c}),
-  </#list>
+    <#list getDictMap()[type] as dict>
+        ${dict.keyEnName()}(${dict.keyId()?c}, "${dict.keyName()}", "${dict.keyEnName()}", ${dict.dictId()?c}, "${dict.dictName()}", "${dict.dictEnName()}", ${dict.orderNum()?c}),
+    </#list>
   ;
   final int keyId;
   final String keyName;

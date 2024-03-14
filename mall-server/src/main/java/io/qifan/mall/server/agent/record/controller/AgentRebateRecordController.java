@@ -67,8 +67,9 @@ public class AgentRebateRecordController {
         .setMinCreatedTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0)));
     return agentRebateRecordService.query(queryRequest);
   }
+
   @EventListener
-  public void onOrderSuccessEvent(OrderSuccessEvent orderSuccessEvent){
+  public void onOrderSuccessEvent(OrderSuccessEvent orderSuccessEvent) {
     agentRebateRecordService.rebate(orderSuccessEvent);
   }
 }

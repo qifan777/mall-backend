@@ -37,6 +37,7 @@ public interface ProductOrder extends BaseEntity {
 
   @OneToOne
   Address address();
+
   @OneToOne
   @Null
   CouponUser couponUser();
