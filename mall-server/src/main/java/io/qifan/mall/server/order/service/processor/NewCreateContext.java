@@ -1,5 +1,6 @@
 package io.qifan.mall.server.order.service.processor;
 
+import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.dto.ProductOrderInput;
 import io.qifan.mall.server.payment.entity.Payment;
 import lombok.Data;
@@ -11,4 +12,5 @@ public class NewCreateContext {
 
   private ProductOrderInput productOrderInput;
   private Payment payment;
+  private ProductOrder productOrder;
 }

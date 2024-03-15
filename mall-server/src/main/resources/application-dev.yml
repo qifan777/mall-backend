@@ -34,3 +34,4 @@ jimmer:
     openapi:
       path: /openapi
       ui-path: /openapi-ui
+  trigger-type: transaction_only

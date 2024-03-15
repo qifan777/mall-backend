@@ -78,7 +78,7 @@ public class AgentService {
     AgentTable t = AgentTable.$;
     AgentLevelTable t2 = AgentLevelTable.$;
     AgentLevel agentLevel = agentLevelRepository.sql().createQuery(t2)
-        .where(t2.levelName().eq(DictConstants.AgentLevel.FIRST))
+        .where(t2.levelName().eq(DictConstants.AgentLevelName.FIRST))
         .select(t2).fetchOptional()
         .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "代理等级不存在"));
     Agent produce = AgentDraft.$.produce(draft -> {

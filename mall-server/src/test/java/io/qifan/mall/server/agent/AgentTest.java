@@ -21,11 +21,16 @@ public class AgentTest {
 
   @Test
   public void userCreateTest() {
-    User user = UserDraft.$.produce(draft -> draft.setNickname("起凡").setPhone("1365698799")
-        .setGender(Gender.MALE));
-    StpUtil.login("0f07d638f1bc401188d86dc650ab06a7");
-    eventPublisher.publishEvent(new UserCreateEvent("0f07d638f1bc401188d86dc650ab06a7", null));
-//    eventPublisher.publishEvent(new UserCreateEvent(user.id(),""));
+//    User user = userRepository.save(
+//        UserDraft.$.produce(draft -> draft.setNickname("起凡3").setPhone("1365698790")
+//            .setPassword("123456")
+//            .setGender(Gender.MALE)));
+//    StpUtil.login(user.id());
+//    eventPublisher.publishEvent(
+//        new UserCreateEvent(user.id(), "9MPvc3G0"));
+  }
+  @Test
+  public void orderRebateTest(){
 
   }
 }

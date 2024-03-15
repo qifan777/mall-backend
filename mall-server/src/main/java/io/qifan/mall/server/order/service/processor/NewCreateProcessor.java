@@ -9,6 +9,7 @@ import io.qifan.mall.server.infrastructure.statemachine.processor.OrderStateProc
 import io.qifan.mall.server.order.entity.ProductOrder;
 import io.qifan.mall.server.order.entity.ProductOrderDraft;
 import io.qifan.mall.server.order.entity.ProductOrderItemDraft;
+import io.qifan.mall.server.order.event.OrderEvent.OrderSuccessEvent;
 import io.qifan.mall.server.order.repository.ProductOrderRepository;
 import io.qifan.mall.server.order.service.ProductOrderService;
 import io.qifan.mall.server.payment.entity.PaymentDraft;
@@ -16,6 +17,7 @@ import io.qifan.mall.server.payment.entity.dto.PaymentPriceView;
 import io.qifan.mall.server.product.sku.entity.ProductSkuTable;
 import io.qifan.mall.server.product.sku.repository.ProductSkuRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 
 @OrderStateProcessor(state = "TO_BE_CREATE", event = "CREATE", bizCode = "PRODUCT_ORDER")
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreate
   private final ProductOrderRepository productOrderRepository;
   private final ProductSkuRepository productSkuRepository;
   private final ProductOrderService productOrderService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Override
   public void prepare(StateContext<NewCreateContext> context) {
@@ -91,11 +94,13 @@ public class NewCreateProcessor extends AbstractStateProcessor<String, NewCreate
           // 设置支付详情
           draft.setPayment(context.getContext().getPayment());
         });
-    return R.ok(productOrderRepository.save(entity).id());
+    ProductOrder save = productOrderRepository.save(entity);
+    context.getContext().setProductOrder(save);
+    return R.ok(save.id());
   }
 
   @Override
   public void after(StateContext<NewCreateContext> context) {
-
+    eventPublisher.publishEvent(new OrderSuccessEvent(context.getContext().getProductOrder()));
   }
 }

@@ -23,9 +23,9 @@ public interface AgentLevel extends BaseEntity {
   /**
    * 等级名称
    */
-  @GenField(value = "代理等级", type = ItemType.SELECTABLE, dictEnName = DictConstants.AGENT_LEVEL)
+  @GenField(value = "代理等级", type = ItemType.SELECTABLE, dictEnName = DictConstants.AGENT_LEVEL_NAME)
   @Key
-  DictConstants.AgentLevel levelName();
+  DictConstants.AgentLevelName levelName();
 
   /**
    * 佣金比例

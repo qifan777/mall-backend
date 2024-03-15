@@ -5,11 +5,13 @@ import io.qifan.infrastructure.generator.core.GenField;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
 import io.qifan.mall.server.user.entity.User;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import javax.validation.constraints.Null;
 import org.babyfish.jimmer.sql.Entity;
 import org.babyfish.jimmer.sql.IdView;
+import org.babyfish.jimmer.sql.Key;
 import org.babyfish.jimmer.sql.OneToOne;
+
+import javax.validation.constraints.Null;
+import java.math.BigDecimal;
 
 /**
  * Entity for table "wallet"
@@ -18,24 +20,25 @@ import org.babyfish.jimmer.sql.OneToOne;
 @GenEntity
 public interface Wallet extends BaseEntity {
 
-  /**
-   * 余额
-   */
-  @NotNull
-  @GenField(value = "余额")
-  BigDecimal balance();
+    /**
+     * 余额
+     */
+    @NotNull
+    @GenField(value = "余额")
+    BigDecimal balance();
 
-  /**
-   * 钱包密码
-   */
-  @Null
-  @GenField(value = "密码")
-  String password();
+    /**
+     * 钱包密码
+     */
+    @Null
+    @GenField(value = "密码")
+    String password();
 
-  @IdView
-  String userId();
+    @IdView
+    String userId();
 
-  @OneToOne
-  User user();
+    @OneToOne
+    @Key
+    User user();
 }
 
