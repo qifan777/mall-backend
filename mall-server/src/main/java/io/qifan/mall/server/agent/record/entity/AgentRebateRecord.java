@@ -2,6 +2,7 @@ package io.qifan.mall.server.agent.record.entity;
 
 import io.qifan.infrastructure.generator.core.GenEntity;
 import io.qifan.infrastructure.generator.core.GenField;
+import io.qifan.infrastructure.generator.core.ItemType;
 import io.qifan.mall.server.agent.root.entity.Agent;
 import io.qifan.mall.server.dict.model.DictConstants;
 import io.qifan.mall.server.infrastructure.jimmer.BaseEntity;
@@ -32,15 +33,13 @@ public interface AgentRebateRecord extends BaseEntity {
     /**
      * 返佣订单号
      */
+    @IdView
     @GenField(value = "返佣订单号")
-    @IdView(value = "productOrder")
-    String orderId();
+    String productOrderId();
 
     @ManyToOne
     ProductOrder productOrder();
 
-    @IdView
-    String productOrderId();
 
     /**
      * 钱包流水号
@@ -55,6 +54,17 @@ public interface AgentRebateRecord extends BaseEntity {
     /**
      * 来自第n级的返佣
      */
+    @GenField(value = "来自第n级的返佣", type = ItemType.SELECTABLE, dictEnName = DictConstants.AGENT_LEVEL_NAME)
     DictConstants.AgentLevelName fromLevelName();
+
+    /**
+     * 返佣者
+     */
+    @IdView
+    @GenField(value = "返佣者")
+    String fromAgentId();
+
+    @ManyToOne
+    Agent fromAgent();
 }
 

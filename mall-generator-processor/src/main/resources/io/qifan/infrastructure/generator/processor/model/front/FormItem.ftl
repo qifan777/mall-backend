@@ -25,6 +25,13 @@
                         value-format="YYYY-MM-DD HH:mm:ss"
                 ></el-date-picker>
                 <#break>
+            <#case 6>
+                <remote-select
+                        v-model="${ext.prefix}.${getBind()}"
+                        :label-prop="userLabelProp"
+                        :query-options="userQueryOptions"
+                ></remote-select>
+                <#break>
             <#default >
                 <el-input v-model="${ext.prefix}.${getBind()}"></el-input>
         </#switch>

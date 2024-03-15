@@ -1,20 +1,29 @@
 
 input AgentRebateRecordInput {
     #allScalars(AgentRebateRecord)
+    agentId
+    walletRecordId
+    productOrderId
+    fromAgentId
     id?
 }
 
 specification AgentRebateRecordSpec {
     #allScalars
-    like/i(walletRecordId)
-    like/i(agentId)
-    like/i(orderId)
-    like/i(id)
     ge(createdTime)
     le(createdTime)
     ge(editedTime)
     le(editedTime)
     agent{
+      id
       userId
+      agentNo
     }
+    fromAgent{
+      id
+      userId
+      agentNo
+    }
+    walletRecordId
+    productOrderId
 }

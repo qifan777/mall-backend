@@ -62,13 +62,7 @@ public class AgentRebateRecordService {
         return true;
     }
 
-    public @Null Agent findParentAgent(String userId) {
-        AgentTable t = AgentTable.$;
-        Agent agent = agentRepository.sql().createQuery(t)
-                .where(t.userId().eq(userId))
-                .select(t)
-                .fetchOptional()
-                .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "用户信息不券"));
+    public @Null Agent findParentAgent(Agent agent) {
         if (StringUtils.hasText(agent.parentId())) {
             return agentRepository.findById(agent.parentId(), AgentRepository.COMPLEX_FETCHER)
                     .orElse(null);
@@ -77,29 +71,35 @@ public class AgentRebateRecordService {
     }
 
     public void rebate(OrderSuccessEvent orderSuccessEvent) {
-        Agent agent1, agent2, agent3;
-        agent1 = findParentAgent(StpUtil.getLoginIdAsString());
-        if (agent1 == null) {
+        AgentTable t = AgentTable.$;
+        Agent currentAgent = agentRepository.sql().createQuery(t)
+                .where(t.userId().eq(StpUtil.getLoginIdAsString()))
+                .select(t)
+                .fetchOptional()
+                .orElseThrow(() -> new BusinessException(ResultCode.NotFindError, "用户代理信息不存在"));
+        Agent parentAgent1, parentAgent2, parentAgent3;
+        parentAgent1 = findParentAgent(currentAgent);
+        if (parentAgent1 == null) {
             return;
         }
-        rebate(orderSuccessEvent.productOrder(), agent1, DictConstants.AgentLevelName.FIRST);
+        rebate(orderSuccessEvent.productOrder(), parentAgent1, currentAgent, DictConstants.AgentLevelName.FIRST);
 
-        agent2 = findParentAgent(agent1.userId());
-        if (agent2 == null) {
+        parentAgent2 = findParentAgent(parentAgent1);
+        if (parentAgent2 == null) {
             return;
         }
-        rebate(orderSuccessEvent.productOrder(), agent2, DictConstants.AgentLevelName.SECOND);
+        rebate(orderSuccessEvent.productOrder(), parentAgent2, currentAgent, DictConstants.AgentLevelName.SECOND);
 
-        agent3 = findParentAgent(agent2.userId());
-        if (agent3 == null) {
+        parentAgent3 = findParentAgent(parentAgent2);
+        if (parentAgent3 == null) {
             return;
         }
-        rebate(orderSuccessEvent.productOrder(), agent3, DictConstants.AgentLevelName.THIRD);
+        rebate(orderSuccessEvent.productOrder(), parentAgent3, currentAgent, DictConstants.AgentLevelName.THIRD);
 
     }
 
 
-    public void rebate(ProductOrder productOrder, Agent agent,
+    public void rebate(ProductOrder productOrder, Agent agent, Agent currentAgent,
                        DictConstants.AgentLevelName currentLevelName) {
         if (agent.agentLevel().levelName().getKeyId() < currentLevelName.getKeyId()) {
             return;
@@ -123,6 +123,7 @@ public class AgentRebateRecordService {
             draft.setAgentId(agent.id())
                     .setProductOrderId(productOrder.id())
                     .setFromLevelName(currentLevelName)
+                    .setFromAgentId(currentAgent.id())
                     .setWalletRecordId(walletRecord.id());
         });
         // 保存返佣记录

@@ -15,6 +15,14 @@
                 >
                 </datetime-picker>
                 <#break>
+            <case 6>
+                <remote-select
+                        v-model="query.${getBind()}"
+                        :label-prop="userLabelProp"
+                        :query-options="userQueryOptions"
+                ></remote-select>
+                <#break>
+            </case>
             <#default>
                 <el-input v-model="query.${getBind()}"></el-input>
         </#switch>

@@ -9,6 +9,13 @@
                 <#case 4>
                     <el-avatar :src="row.${getBind()}" alt=""></el-avatar>
                     <#break>
+                <#case 6>
+                    <remote-select
+                            v-model="row.${getBind()}"
+                            :label-prop="userLabelProp"
+                            :query-options="userQueryOptions"
+                    ></remote-select>
+                    <#break>
                 <#default>
                     {{row.${getBind()}}}
             </#switch>
